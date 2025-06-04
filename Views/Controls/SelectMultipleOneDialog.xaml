@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels"
+             xmlns:model="clr-namespace:inovasyposmobile.Models.Filters"
+             x:Class="inovasyposmobile.Views.Controls.SelectMultipleOneDialog"
+             Size="400,500">
+
+    <RefreshView
+        x:DataType="viewModel:ValueDisplayViewModel"
+        IsRefreshing="{Binding IsRefreshing}"
+        Command="{Binding GetDatasCommand}">
+
+        <Grid>
+
+            <VerticalStackLayout
+                VerticalOptions="Fill"
+                IsVisible="{Binding IsNotLoading}">
+
+                <CollectionView 
+                        x:Name="CollectionView"
+                        ItemsSource="{Binding Datas}">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="model:ValueDisplayFilterModel">
+
+                            <Border
+                                Stroke="Transparent">
+                                <VerticalStackLayout>
+
+                                    <StackLayout
+                                        Padding="10">
+                                        <Label Text="{Binding Display}" FontAttributes="Bold" />
+                                    </StackLayout>
+
+                                    <BoxView 
+                                        HeightRequest="1"
+                                        BackgroundColor="Black"
+                                        HorizontalOptions="Fill" />
+
+                                </VerticalStackLayout>
+
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnItemTapped"/>
+                                </Border.GestureRecognizers>
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+                        
+                </CollectionView>
+
+            </VerticalStackLayout>
+
+            <Grid 
+                ColumnDefinitions="*" 
+                RowDefinitions="*"
+                IsVisible="{Binding IsLoading}">
+                <ActivityIndicator 
+                    IsRunning="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="50" HeightRequest="50"
+                    Color="Black" />
+            </Grid>
+
+        </Grid>
+
+    </RefreshView>
+</toolkit:Popup>

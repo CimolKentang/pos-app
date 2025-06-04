@@ -1,0 +1,43 @@
+using System.Threading.Tasks;
+using CommunityToolkit.Maui.Views;
+using inovasyposmobile.Models.Transaksi.Penjualan;
+using inovasyposmobile.ViewModels.Transaksi;
+using inovasyposmobile.Views.Controls;
+
+namespace inovasyposmobile.Views.Pages.Transaksi.Penjualan;
+
+public partial class PenjualanView : ContentPage
+{
+	private readonly PenjualanViewModel _penjualanViewModel;
+	public PenjualanView(PenjualanViewModel penjualanViewModel)
+	{
+		InitializeComponent();
+		BindingContext = _penjualanViewModel = penjualanViewModel;
+	}
+
+	protected override void OnAppearing()
+	{
+		base.OnAppearing();
+		_penjualanViewModel.GetDatasCommand.Execute(null);
+	}
+
+	private void GoToPenjualanDetail(object sender, EventArgs e)
+	{
+		// Reset all items' background color first
+		foreach (var item in PenjualanCollection.ItemsSource)
+		{
+			if (PenjualanCollection.ItemTemplate.CreateContent() is ViewCell cell && cell.View is Grid border)
+			{
+            	border.BackgroundColor = Colors.Transparent;
+			}
+		}
+
+		// Highlight selected item
+		if (sender is Grid tappedFrame)
+		{
+			var selectedItem = (PenjualanModel)tappedFrame.BindingContext;
+			Console.WriteLine($"You selected {selectedItem.PenjualanId}");
+			Shell.Current.GoToAsync($"PenjualanDetail?PenjualanId={selectedItem.PenjualanId}");
+		}
+	}
+}

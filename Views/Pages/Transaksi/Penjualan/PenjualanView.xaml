@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui"
+             xmlns:converter="clr-namespace:inovasyposmobile.Converters"
+             xmlns:selector="clr-namespace:inovasyposmobile.Selectors"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Transaksi"
+             xmlns:model="clr-namespace:inovasyposmobile.Models.Transaksi.Penjualan"
+             x:Class="inovasyposmobile.Views.Pages.Transaksi.Penjualan.PenjualanView"
+             Title="Penjualan">
+
+    <ContentPage.Resources>
+        <converter:DateTimeConverter x:Key="DateTimeConverter"></converter:DateTimeConverter>
+
+        <!-- For applying top border for the first element -->
+        <DataTemplate 
+            x:Key="FirstDataTemplate"
+            x:DataType="model:PenjualanModel">
+
+            <Grid>
+                <VerticalStackLayout>
+                    <BoxView 
+                        HeightRequest="1"
+                        BackgroundColor="Black"
+                        HorizontalOptions="Fill" />
+
+                    <VerticalStackLayout
+                        Padding="10">
+                        <HorizontalStackLayout
+                            Spacing="20">
+                            <Label Text="{Binding NomorPenjualan}" FontAttributes="Bold" />
+                            <Label Text="{Binding Tanggal, Converter={StaticResource DateTimeConverter}}" />
+                            <Label Text="{Binding NamaGudang}" />
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding NamaPelanggan}" />
+                    </VerticalStackLayout>
+
+                    <BoxView 
+                        HeightRequest="1"
+                        BackgroundColor="Black"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="GoToPenjualanDetail" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+        </DataTemplate>
+
+        <DataTemplate 
+            x:Key="DefaultItemTemplate"
+            x:DataType="model:PenjualanModel">
+
+            <Grid>
+                <VerticalStackLayout>
+                    <VerticalStackLayout
+                        Padding="10">
+                        <HorizontalStackLayout
+                            Spacing="20">
+                            <Label Text="{Binding NomorPenjualan}" FontAttributes="Bold" />
+                            <Label Text="{Binding Tanggal, Converter={StaticResource DateTimeConverter}}" />
+                            <Label Text="{Binding NamaGudang}" />
+                        </HorizontalStackLayout>
+                        <Label Text="{Binding NamaPelanggan}" />
+                    </VerticalStackLayout>
+
+                    <BoxView 
+                        HeightRequest="1"
+                        BackgroundColor="Black"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+
+                <Grid.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="GoToPenjualanDetail" />
+                </Grid.GestureRecognizers>
+            </Grid>
+
+        </DataTemplate>
+
+        <selector:FirstItemTemplateSelector
+            x:Key="FirstItemTemplate"
+            FirstItemTemplate="{StaticResource FirstDataTemplate}"
+            DefaultItemTemplate="{StaticResource DefaultItemTemplate}" />
+    </ContentPage.Resources>
+    
+    <RefreshView
+        x:DataType="viewModel:PenjualanViewModel"
+        IsRefreshing="{Binding IsRefreshing}"
+        Command="{Binding GetDatasCommand}">
+
+        <VerticalStackLayout
+            VerticalOptions="Fill">
+
+            <VerticalStackLayout
+                Padding="10">
+                <Border
+                    Stroke="Black"
+                    StrokeShape="RoundRectangle 5">
+                    <Grid
+                        ColumnDefinitions="*, Auto"
+                        RowDefinitions="Auto">
+                        <Entry
+                            Text="{Binding SearchText, Mode=TwoWay}"
+                            Placeholder="Cari penjualan..."
+                            PlaceholderColor="Gray"
+                            Margin="0"
+                            Grid.Column="0" />
+                    </Grid>
+                </Border>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}">
+
+                <CollectionView 
+                    x:Name="PenjualanCollection"
+                    ItemsSource="{Binding Penjualans}"
+                    ItemTemplate="{StaticResource FirstItemTemplate}">
+
+                </CollectionView>
+
+            </VerticalStackLayout>
+
+            <Grid 
+                ColumnDefinitions="*" 
+                RowDefinitions="*"
+                IsVisible="{Binding IsLoading}">
+                <ActivityIndicator 
+                    IsRunning="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="50" HeightRequest="50"
+                    Color="Black" />
+            </Grid>
+
+            <!-- <Button
+                Text="Show Dialog"
+                Command="{Binding ShowDialogCommand}"></Button> -->
+
+        </VerticalStackLayout>
+
+    </RefreshView>
+
+</ContentPage>

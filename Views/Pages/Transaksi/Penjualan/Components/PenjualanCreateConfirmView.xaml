@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:penjualanCreateVM="clr-namespace:inovasyposmobile.ViewModels.Transaksi.Penjualan"
+             xmlns:produkVM="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Produk"
+             x:Class="inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components.PenjualanCreateConfirmView"
+             Title="Proses Penjualan">
+    <Grid
+        x:DataType="penjualanCreateVM:PenjualanCreateViewModel"
+        RowDefinitions="*,Auto">
+        <ScrollView
+            Grid.Row="0"
+            VerticalOptions="Start"
+            Padding="10,0,10,0">
+            <VerticalStackLayout>
+                <CollectionView
+                    ItemsSource="{Binding SelectedProduks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="produkVM:ProdukWithStokViewModel">
+                            <Grid
+                                ColumnDefinitions="*,50">
+                                <Grid
+                                    Grid.Column="0"
+                                    ColumnDefinitions="45,*"
+                                    ColumnSpacing="10">
+                                    <Image
+                                        Grid.Column="0"
+                                        IsVisible="{Binding HasImage}"
+                                        Source="{Binding ProdukWithStok.Gambar}"
+                                        HeightRequest="45"
+                                        WidthRequest="45"
+                                        Aspect="AspectFit" />
+                                    <Image
+                                        Grid.Column="0"
+                                        IsVisible="{Binding HasNoImage}"
+                                        Grid.Row="0"
+                                        Source="no_image.png"
+                                        HeightRequest="45"
+                                        WidthRequest="45"
+                                        Aspect="AspectFit" />
+                                    <Label
+                                        Grid.Column="1"
+                                        Text="{Binding ProdukWithStok.NamaProduk}"
+                                        VerticalOptions="Center" />
+                                </Grid>
+                                <Label
+                                    Grid.Column="1"
+                                    VerticalOptions="Center"
+                                    HorizontalTextAlignment="End"
+                                    Text="{Binding Total,StringFormat='{0:N0}'}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

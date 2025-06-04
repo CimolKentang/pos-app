@@ -1,0 +1,451 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:inovasyposmobile.Converters"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Transaksi.Penjualan"
+             xmlns:model="clr-namespace:inovasyposmobile.Models.Transaksi.Penjualan"
+             x:Class="inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components.PenjualanDetailView"
+             Title="Detail Penjualan">
+
+    <ContentPage.Resources>
+        <converter:DateTimeConverter x:Key="DateTimeConverter"></converter:DateTimeConverter>
+    </ContentPage.Resources>
+
+    <RefreshView
+            x:DataType="viewModel:PenjualanDetailViewModel">
+
+        <ScrollView>
+
+        <VerticalStackLayout
+            VerticalOptions="Fill">
+
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Padding="10">
+                    
+                <VerticalStackLayout
+                    Spacing="5">
+
+                    <Label 
+                        Text="{Binding Penjualan.NomorPenjualan}"
+                        FontAttributes="Bold"
+                        FontSize="20" />
+
+                    <HorizontalStackLayout
+                        Spacing="5">
+                        <Label 
+                            Text="Dikemas:" />
+
+                        <Label
+                            Text="{Binding Penjualan.Tanggal, Converter={StaticResource DateTimeConverter}}" />
+                    </HorizontalStackLayout>
+                    
+                    <HorizontalStackLayout
+                        Spacing="5">
+                        <Label 
+                            Text="Pesanan:" />
+
+                        <Label
+                            Text="{Binding Penjualan.CreatedTime, Converter={StaticResource DateTimeConverter}}" />
+                    </HorizontalStackLayout>
+
+                </VerticalStackLayout>
+
+                <BoxView
+                    HeightRequest="1"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="Black"
+                    Margin="0, 5, 0, 5" />
+
+                <VerticalStackLayout
+                    Spacing="5">
+
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Pelanggan"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.NamaPelanggan}"
+                            Grid.Column="2" />
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Alamat Pengiriman"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.AlamatPengirimanLengkap}"
+                            Grid.Column="2" />
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Nomor Telepon"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.Pelanggan.NoHp}"
+                            Grid.Column="2" />
+                    </Grid>
+
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Sales"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.NamaSales}"
+                            Grid.Column="2" />
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Gudang"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.NamaGudang}"
+                            Grid.Column="2" />
+                    </Grid>
+                    
+                    <Grid
+                        IsVisible="{Binding IsKonsinyasi}"
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Konsinyasi"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            Text="{Binding Penjualan.Konsinyasi.NomorKonsinyasi}"
+                            Grid.Column="2" />
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="150, 10, *">
+                        <Label
+                            Text="Sales Channel Referensi"
+                            Grid.Column="0" />
+                        <Label
+                            Text=":"
+                            Grid.Column="1" />
+                        <Label
+                            IsVisible="{Binding HasSalesChannelReferensi}"
+                            Text="{Binding Penjualan.NamaSalesChannel}"
+                            Grid.Column="2" />
+                        <Label
+                            IsVisible="{Binding HasNotSalesChannelReferensi}"
+                            Text="-"
+                            Grid.Column="2" />
+                    </Grid>
+
+                </VerticalStackLayout>
+
+                <BoxView
+                    HeightRequest="1"
+                    HorizontalOptions="Fill"
+                    BackgroundColor="Black"
+                    Margin="0, 5, 0, 5" />
+
+                <CollectionView 
+                        ItemsSource="{Binding Penjualan.PenjualanDetails}">
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate x:DataType="model:PenjualanDetailModel">
+
+                            <VerticalStackLayout>
+
+                                <VerticalStackLayout
+                                    Padding="0, 10"
+                                    Spacing="5">
+
+                                    <VerticalStackLayout>
+
+                                        <Label
+                                            Text="Produk"
+                                            FontAttributes="Bold" />
+
+                                        <Label
+                                            Text="{Binding ProdukVarian}" />
+
+                                    </VerticalStackLayout>
+
+                                    <Grid
+                                        RowDefinitions="Auto"
+                                        ColumnDefinitions="*, *">
+
+                                        <VerticalStackLayout
+                                            Grid.Column="0">
+                                            <Label
+                                                Text="Jumlah"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End" />
+                                            <Label
+                                                Text="{Binding Jumlah}"
+                                                HorizontalTextAlignment="End" />
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout
+                                            Grid.Column="1">
+                                            <Label
+                                                Text="Jumlah"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End" />
+                                            <Label
+                                                Text="{Binding HargaJual}"
+                                                HorizontalTextAlignment="End" />
+                                        </VerticalStackLayout>
+
+                                    </Grid>
+                                    
+                                    <Grid
+                                        RowDefinitions="Auto"
+                                        ColumnDefinitions="*, *">
+
+                                        <VerticalStackLayout
+                                            Grid.Column="0">
+                                            <Label
+                                                Text="Diskon"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End" />
+                                            
+                                            <StackLayout>
+                                                <Grid
+                                                    RowDefinitions="Auto"
+                                                    ColumnDefinitions="*, *">
+                                                    <HorizontalStackLayout
+                                                        Grid.Column="0"
+                                                        HorizontalOptions="End">
+                                                        <Label
+                                                            Text="{Binding DiskonPersentase}" />   
+                                                        <Label
+                                                            Text="%" />
+                                                    </HorizontalStackLayout> 
+
+                                                    <Label
+                                                        Text="{Binding Diskon}"
+                                                        Grid.Column="1"
+                                                        HorizontalTextAlignment="End" />
+                                                </Grid>
+                                            </StackLayout>
+                                        </VerticalStackLayout>
+
+                                        <VerticalStackLayout
+                                            Grid.Column="1">
+                                            <Label
+                                                Text="Total"
+                                                FontAttributes="Bold"
+                                                HorizontalTextAlignment="End" />
+                                            <Label
+                                                Text="{Binding SubTotal}"
+                                                HorizontalTextAlignment="End" />
+                                        </VerticalStackLayout>
+
+                                    </Grid>
+
+                                </VerticalStackLayout>
+
+                                <BoxView
+                                    HeightRequest="1"
+                                    HorizontalOptions="Fill"
+                                    BackgroundColor="Black"
+                                    Margin="0, 5, 0, 5" />
+
+                            </VerticalStackLayout>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <VerticalStackLayout
+                    Margin="0, 0, 0, 20">
+                    <Label
+                        Text="Catatan Penjualan"
+                        FontAttributes="Bold" />
+                    <Label
+                        IsVisible="{Binding HasDescription}"
+                        Text="{Binding Penjualan.Deskripsi}" />
+                    <Label
+                        IsVisible="{Binding HasNotDescription}"
+                        Text="-" />
+                </VerticalStackLayout>
+
+                <!-- Summary -->
+                <VerticalStackLayout
+                    Spacing="5"
+                    Margin="0, 0, 0, 20">
+
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="*, *">
+                        <Label
+                            Text="Total Harga"
+                            FontAttributes="Bold"
+                            Grid.Column="0" />
+
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End">
+                            <Label
+                                Text="Rp"
+                                FontAttributes="Bold" />
+                            <Label
+                                Text="{Binding Penjualan.SubTotal}"
+                                FontAttributes="Bold" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="*, *">
+                        <Label
+                            Text="Total Tagihan"
+                            FontAttributes="Bold"
+                            Grid.Column="0" />
+
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End">
+                            <Label
+                                Text="Rp"
+                                FontAttributes="Bold" />
+                            <Label
+                                Text="{Binding Penjualan.Total}"
+                                FontAttributes="Bold" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="*, *">
+                        <Label
+                            Text="Jumlah Bayar"
+                            Grid.Column="0" />
+
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End">
+                            <Label
+                                Text="Rp" />
+                            <Label
+                                Text="{Binding Penjualan.JumlahBayar}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+                    
+                    <Grid
+                        RowDefinitions="Auto"
+                        ColumnDefinitions="*, *">
+                        <Label
+                            Text="Kembalian"
+                            Grid.Column="0" />
+
+                        <HorizontalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="End">
+                            <Label
+                                Text="Rp" />
+                            <Label
+                                Text="{Binding Penjualan.Kembalian}" />
+                        </HorizontalStackLayout>
+                    </Grid>
+
+                </VerticalStackLayout>
+
+                <!-- Pembayaran -->
+                <VerticalStackLayout
+                    Spacing="10">
+
+                    <Label
+                        Text="Pembayaran"
+                        FontAttributes="Bold"
+                        TextColor="Blue" />
+
+                    <Label
+                        Text="{Binding Penjualan.StatusPembayaran}" />
+
+                    <VerticalStackLayout>
+                        <Label
+                            Text="Metode Pembayaran" />
+                        <Label
+                            Text="{Binding Penjualan.NamaMetodePembayaran}"
+                            TextColor="Blue" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout>
+                        <Label
+                            Text="Jatuh Tempo Pelunasan" />
+                        <Label
+                            Text="{Binding Penjualan.JatuhTempo, Converter={StaticResource DateTimeConverter}}" />
+                    </VerticalStackLayout>
+                    
+                    <VerticalStackLayout>
+                        <Label
+                            Text="Sisa Pembayaran" />
+                        <HorizontalStackLayout>
+                            <Label
+                                Text="Rp"
+                                FontAttributes="Bold" />
+                            <Label
+                                Text="{Binding Penjualan.SisaBayar}"
+                                FontAttributes="Bold" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            
+                <!-- Pengiriman -->
+                <VerticalStackLayout>
+                    <Label
+                        Text="Pengiriman"
+                        FontAttributes="Bold" />
+                </VerticalStackLayout>
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout
+                IsVisible="{Binding IsLoading}"
+                VerticalOptions="Fill">
+
+                <ActivityIndicator 
+                    IsRunning="True"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    WidthRequest="50" 
+                    HeightRequest="50"
+                    Color="Black" />
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

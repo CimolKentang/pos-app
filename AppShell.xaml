@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="inovasyposmobile.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:inovasyposmobile"
+    xmlns:penjualanView="clr-namespace:inovasyposmobile.Views.Pages.Transaksi.Penjualan"
+    xmlns:penjualanComponentView="clr-namespace:inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components"
+    Title="inovasyposmobile">
+
+    <!-- <ShellContent
+        Title="Home"
+        ContentTemplate="{DataTemplate local:MainPage}"
+        Route="MainPage" /> -->
+
+    <TabBar>
+        <Tab
+            Title="Home"
+            Icon="home.png">
+            <ShellContent ContentTemplate="{DataTemplate penjualanView:PenjualanView}" />    
+        </Tab>
+        <Tab
+            Title="Menu"
+            Icon="app.png">
+            <ShellContent ContentTemplate="{DataTemplate penjualanComponentView:PenjualanCreateView}" />    
+        </Tab>
+    </TabBar>
+
+</Shell>
