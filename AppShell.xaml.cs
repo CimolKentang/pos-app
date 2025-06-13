@@ -1,4 +1,5 @@
-﻿using inovasyposmobile.Views.Pages.Transaksi.Penjualan;
+﻿using inovasyposmobile.Services.Interfaces.Auth;
+using inovasyposmobile.Views.Pages.Transaksi.Penjualan;
 using inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components;
 
 namespace inovasyposmobile;

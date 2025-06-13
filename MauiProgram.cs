@@ -2,12 +2,15 @@
 using CommunityToolkit.Maui;
 using inovasyposmobile.Handlers;
 using inovasyposmobile.Services.Implementations;
+using inovasyposmobile.Services.Implementations.Auth;
 using inovasyposmobile.Services.Implementations.Masterdata;
 using inovasyposmobile.Services.Implementations.Transaksi;
 using inovasyposmobile.Services.Interfaces;
+using inovasyposmobile.Services.Interfaces.Auth;
 using inovasyposmobile.Services.Interfaces.Masterdata;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 using inovasyposmobile.ViewModels;
+using inovasyposmobile.ViewModels.Auth;
 using inovasyposmobile.ViewModels.Masterdata.Produk;
 using inovasyposmobile.ViewModels.Transaksi;
 using inovasyposmobile.ViewModels.Transaksi.Penjualan;
@@ -68,6 +71,8 @@ public static class MauiProgram
 		});
 
 		// register services
+		builder.Services.AddSingleton<IAuthService, AuthService>();
+		builder.Services.AddSingleton<LoginViewModel>();
 		builder.Services.AddSingleton<IPenjualanService, PenjualanService>();
 		builder.Services.AddSingleton<PenjualanViewModel>();		
 		builder.Services.AddSingleton<PenjualanDetailViewModel>();

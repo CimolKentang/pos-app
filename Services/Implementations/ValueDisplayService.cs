@@ -12,6 +12,7 @@ using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Responses;
 using inovasyposmobile.Services.Implementations.Transaksi;
 using inovasyposmobile.Services.Interfaces;
+using inovasyposmobile.Services.Interfaces.Auth;
 
 namespace inovasyposmobile.Services.Implementations
 {
@@ -20,11 +21,14 @@ namespace inovasyposmobile.Services.Implementations
         private readonly HttpClient _httpPosClient;
         private readonly HttpClient _httpCustomerClient;
         private readonly IConnectivity _connectivity;
+        private readonly IAuthService _authService;
         private string apiUrl = "";
         public ValueDisplayService(
             IHttpClientFactory httpClientFactory,
-            IConnectivity connectivity
+            IConnectivity connectivity,
+            IAuthService authService
         ) {
+            _authService = authService;
             _httpPosClient = httpClientFactory.CreateClient("InovasyAPI");
             _httpCustomerClient = httpClientFactory.CreateClient("InovasyCustomerAPI");
             _connectivity = connectivity;
@@ -39,7 +43,8 @@ namespace inovasyposmobile.Services.Implementations
 
             try
             {
-                var token = ConstantToken.Token;
+                var token = await _authService.GetTokenAsync();
+
                 object searchParamsObject = new object();
                 HttpResponseMessage response;
 

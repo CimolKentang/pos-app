@@ -8,6 +8,7 @@ using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Responses;
 using inovasyposmobile.Services.Implementations.Transaksi;
+using inovasyposmobile.Services.Interfaces.Auth;
 using inovasyposmobile.Services.Interfaces.Masterdata;
 
 namespace inovasyposmobile.Services.Implementations.Masterdata
@@ -16,9 +17,11 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;
+        private readonly IAuthService _authService;
         private readonly string apiUrl = "masterdata/produk/";
-        public ProdukService(IHttpClientFactory httpClientFactory, IConnectivity connectivity)
+        public ProdukService(IHttpClientFactory httpClientFactory, IConnectivity connectivity, IAuthService authService)
         {
+            _authService = authService;
             _httpClient = httpClientFactory.CreateClient("InovasyAPI");
             _connectivity = connectivity;
         }
@@ -32,7 +35,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
 
             try
             {
-                var token = ConstantToken.Token;
+                var token = await _authService.GetTokenAsync();
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
@@ -130,7 +133,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
 
             try
             {
-                var token = ConstantToken.Token;
+                var token = await _authService.GetTokenAsync();
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search-produk-stok", searchParams);
