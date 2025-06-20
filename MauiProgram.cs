@@ -40,17 +40,11 @@ public static class MauiProgram
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
 				// fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
-				fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
+				fonts.AddFont("MaterialSymbolsOutlined.ttf", "MaterialSymbols");
 			})
 			.ConfigureMauiHandlers(handlers =>
 			{
-#if ANDROID
-				handlers.AddHandler<Entry, NoBorderBottomEntryhandler>();
-#endif
-
-#if IOS || MACCATALYST
-				handlers.AddHandler<Entry, NoBorderBottomEntryhandler>();
-#endif
+				handlers.AddHandler<Entry, CustomEntryHandler>();
 			});
 
 		// http client with base address
@@ -78,9 +72,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PenjualanDetailViewModel>();
 
 		builder.Services.AddSingleton<IProdukService, ProdukService>();
-		builder.Services.AddSingleton<PenjualanCreateViewModel>();	
-		builder.Services.AddSingleton<ProdukWithStokListViewModel>();
-		builder.Services.AddSingleton<PenjualanKasirViewModel>();
+		builder.Services.AddSingleton<PenjualanCreateViewModel>();
 
 		builder.Services.AddSingleton<IValueDisplayService, ValueDisplayService>();
 		builder.Services.AddSingleton<ValueDisplayViewModel>();

@@ -21,7 +21,7 @@
 		<Nullable>enable</Nullable>
 
 		<!-- Display name -->
-		<ApplicationTitle>inovasyposmobile</ApplicationTitle>
+		<ApplicationTitle>Inovasy POS</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.inovasyposmobile</ApplicationId>
@@ -53,8 +53,8 @@
 		<MauiImage Update="Resources\Images\dotnet_bot.png" Resize="True" BaseSize="300,185" />
 
 		<!-- Custom Fonts -->
-		<MauiFont Include="Resources\Fonts\MaterialIcons-Regular.ttf" />
   		<MauiFont Include="Resources\Fonts\OpenSans-Regular.ttf" />
+  		<MauiFont Include="Resources\Fonts\MaterialSymbolsOutlined.ttf" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
