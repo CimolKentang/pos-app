@@ -16,7 +16,7 @@ public partial class PenjualanCreateView : ContentPage
 
 		if (BindingContext is PenjualanCreateViewModel penjualanCreateViewModel)
 		{
-			if (penjualanCreateViewModel.Produks.Count < 1)
+			if (penjualanCreateViewModel.PenjualanDetails.Count < 1)
 			{
 				penjualanCreateViewModel.InitPenjualanKasirCommand.Execute(null);
 			}

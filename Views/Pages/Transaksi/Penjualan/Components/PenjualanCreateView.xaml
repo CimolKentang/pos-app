@@ -16,6 +16,7 @@
             RowDefinitions="*,Auto">
 
             <listView:SfListView
+                IsVisible="{Binding IsNotLoading}"
                 Grid.Row="0"
                 Background="White"
                 Padding="10"
@@ -33,61 +34,62 @@
                             RippleBackground="Black"
                             TouchDownEffects="Ripple">
                             <Grid>
-                                <Grid.GestureRecognizers>
-                                    <TapGestureRecognizer Command="{Binding SelectToggleCommand}" />
-                                </Grid.GestureRecognizers>
                                 <Border 
                                     Stroke="Transparent"
                                     StrokeShape="RoundRectangle 10">
-                                    <Grid
-                                        Margin="0"
-                                        RowDefinitions="Auto, Auto, Auto, Auto"
-                                        RowSpacing="0">
-                                        <!-- image -->
-                                        <Image
-                                            IsVisible="{Binding HasNoImage}"
-                                            Grid.Row="0"
-                                            Source="no_image.png"
-                                            HeightRequest="145"
-                                            Aspect="AspectFit" />
-                                        
-                                        <Image
-                                            IsVisible="{Binding HasImage}"
-                                            Grid.Row="0"
-                                            Source="{Binding ProdukWithStok.Gambar}"
-                                            HeightRequest="145"
-                                            Aspect="AspectFit" />
+                                    <VerticalStackLayout>
+                                        <Grid
+                                            Margin="0"
+                                            RowDefinitions="Auto, Auto, Auto, Auto"
+                                            RowSpacing="0">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer Command="{Binding SelectToggleCommand}" />
+                                            </Grid.GestureRecognizers>
+                                            <!-- image -->
+                                            <Image
+                                                IsVisible="{Binding HasNoImage}"
+                                                Grid.Row="0"
+                                                Source="no_image.png"
+                                                HeightRequest="145"
+                                                Aspect="AspectFit" />
+                                            
+                                            <Image
+                                                IsVisible="{Binding HasImage}"
+                                                Grid.Row="0"
+                                                Source="{Binding ProdukWithStok.Gambar}"
+                                                HeightRequest="145"
+                                                Aspect="AspectFit" />
 
-                                        <Label
-                                            Grid.Row="1"
-                                            Margin="10,10,0,4"
-                                            LineBreakMode="TailTruncation"
-                                            MaxLines="1"
-                                            FontAttributes="Bold"
-                                            Style="{DynamicResource TitleLabelStyle}"
-                                            Text="{Binding ProdukWithStok.NamaProduk}" />
-
-                                        <StackLayout
-                                            Grid.Row="2"
-                                            Margin="10,0,10,8"
-                                            Orientation="Vertical"
-                                            Spacing="2">
                                             <Label
-                                                FontSize="16"
-                                                LineHeight="{OnPlatform Android=1.25,Default=-1}"
-                                                Text="{Binding ProdukWithStok.HargaJual, StringFormat='Harga: Rp {0:N0}'}"/>
-                                            <Label
-                                                FontSize="16"
-                                                LineHeight="{OnPlatform Android=1.25,Default=-1}"
-                                                Text="{Binding ProdukWithStok.Saldo, StringFormat='Stok: {0:N0}'}" />
-                                        </StackLayout>
+                                                Grid.Row="1"
+                                                Margin="10,10,0,4"
+                                                LineBreakMode="TailTruncation"
+                                                MaxLines="1"
+                                                FontAttributes="Bold"
+                                                Style="{DynamicResource TitleLabelStyle}"
+                                                Text="{Binding ProdukWithStok.NamaProduk}" />
 
+                                            <StackLayout
+                                                Grid.Row="2"
+                                                Margin="10,0,10,8"
+                                                Orientation="Vertical"
+                                                Spacing="2">
+                                                <Label
+                                                    FontSize="16"
+                                                    LineHeight="{OnPlatform Android=1.25,Default=-1}"
+                                                    Text="{Binding ProdukWithStok.HargaJual, StringFormat='Harga: Rp {0:N0}'}"/>
+                                                <Label
+                                                    FontSize="16"
+                                                    LineHeight="{OnPlatform Android=1.25,Default=-1}"
+                                                    Text="{Binding ProdukWithStok.Saldo, StringFormat='Stok: {0:N0}'}" />
+                                            </StackLayout>
+                                        </Grid>
                                         <VerticalStackLayout
                                             Grid.Row="3"
+                                            IsVisible="{Binding IsSelected}"
                                             MinimumHeightRequest="30"
                                             Margin="10,10,0,0">
                                             <FlexLayout
-                                                IsVisible="{Binding IsSelected}"
                                                 AlignItems="Center"
                                                 JustifyContent="SpaceEvenly">
                                                 <Border
@@ -129,7 +131,7 @@
                                                 </Border>
                                             </FlexLayout>
                                         </VerticalStackLayout>
-                                    </Grid>
+                                    </VerticalStackLayout>
                                 </Border>
                             </Grid>
                         </syncEffectsView:SfEffectsView>
@@ -142,6 +144,15 @@
                     <listView:GridLayout SpanCount="{OnPlatform Default=5, Android=2, iOS=2}"/>
                 </listView:SfListView.ItemsLayout>
             </listView:SfListView>
+
+            <ActivityIndicator 
+                IsVisible="{Binding IsLoading}"
+                Grid.Row="0"
+                IsRunning="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="50" HeightRequest="50"
+                Color="{StaticResource Primary}" />
 
             <Grid
                 Grid.Row="1"
@@ -165,7 +176,7 @@
                             Text="Total Harga: " />
                         <Label
                             FontSize="16"
-                            Text="{Binding Total, StringFormat='Rp {0:N0}'}" />
+                            Text="{Binding SubTotal, StringFormat='Rp {0:N0}'}" />
                     </HorizontalStackLayout>
 
                     <Border

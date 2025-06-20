@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using inovasyposmobile.Constants;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Helpers;
+using inovasyposmobile.Models.Akuntansi;
 using inovasyposmobile.Models.Filters;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Responses;
@@ -75,13 +76,23 @@ namespace inovasyposmobile.Services.Implementations
                         string urlWithQuery = apiUrl + QueryStringHelper.ToQueryString((GudangSearchParams)searchParamsObject);
                         response = await _httpPosClient.GetAsync(urlWithQuery);
                         break;
+
+                    case SelectMultipleForConstant.AkunPenjualan:
+                        searchParamsObject = new AkunSearchParams();
+                        ((AkunSearchParams)searchParamsObject).IsValueDisPlay = true;
+                        ((AkunSearchParams)searchParamsObject).Search = search;
+                        ((AkunSearchParams)searchParamsObject).IsForPenjualan = true;
+                        ((AkunSearchParams)searchParamsObject).SortDir = "asc";
+                        apiUrl = "akuntansi/akun/search";
+                        response = await _httpPosClient.PostAsJsonAsync(apiUrl, searchParamsObject);
+                        break;
                         
                     default:
                         searchParamsObject = new PelangganSearchParams();
                         ((PelangganSearchParams)searchParamsObject).IsValueDisPlay = true;
                         ((PelangganSearchParams)searchParamsObject).Search = search;
-                        apiUrl = "masterdata/pelanggan/";
-                        response = await _httpCustomerClient.PostAsJsonAsync($"{apiUrl}search", searchParamsObject);
+                        apiUrl = "masterdata/pelanggan/search";
+                        response = await _httpCustomerClient.PostAsJsonAsync(apiUrl, searchParamsObject);
                         break;
                 }
 

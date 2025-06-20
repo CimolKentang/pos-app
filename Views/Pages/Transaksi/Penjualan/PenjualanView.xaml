@@ -143,13 +143,14 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout
-                IsVisible="{Binding IsNotLoading}">
+                IsVisible="{Binding IsNotLoading}"
+                VerticalOptions="Fill"
+                Padding="0,0,0,60">
 
                 <CollectionView 
                     x:Name="PenjualanCollection"
                     ItemsSource="{Binding Penjualans}"
                     ItemTemplate="{StaticResource FirstItemTemplate}">
-
                 </CollectionView>
 
             </VerticalStackLayout>
@@ -165,10 +166,6 @@
                     WidthRequest="50" HeightRequest="50"
                     Color="Black" />
             </Grid>
-
-            <!-- <Button
-                Text="Show Dialog"
-                Command="{Binding ShowDialogCommand}"></Button> -->
 
         </VerticalStackLayout>
 

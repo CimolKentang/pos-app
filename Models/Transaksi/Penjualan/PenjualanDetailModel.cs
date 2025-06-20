@@ -43,7 +43,7 @@ namespace inovasyposmobile.Models.Transaksi.Penjualan
 
         public decimal HargaJualProduk { get; set; }
 
-        public decimal? DiskonPersentase { get; set; }
+        public decimal DiskonPersentase { get; set; }
 
         public decimal Diskon { get; set; }
 
@@ -53,7 +53,7 @@ namespace inovasyposmobile.Models.Transaksi.Penjualan
 
         public string? DeskripsiDiskon { get; set; }
 
-        public decimal? SubTotal { get; set; }
+        public decimal SubTotal { get; set; }
         public string? Varian { get; set; }
 
         public string? RecordStatus { get; set; }

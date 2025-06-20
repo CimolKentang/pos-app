@@ -38,14 +38,16 @@
                         <StackLayout.GestureRecognizers>
                             <TapGestureRecognizer Command="{Binding ToggleHidePasswordCommand}" />
                         </StackLayout.GestureRecognizers>
-                        <Image
+                        <Label
                             IsVisible="{Binding HidePassword}"
-                            Source="hide.png"
-                            HeightRequest="32" />
-                        <Image
+                            FontFamily="MaterialSymbols"
+                            Text="&#xE8f5;"
+                            FontSize="25" />
+                        <Label
                             IsVisible="{Binding ShowPassword}"
-                            Source="view.png"
-                            HeightRequest="32" />
+                            FontFamily="MaterialSymbols"
+                            Text="&#xE417;"
+                            FontSize="25" />
                     </StackLayout>
                 </Grid>
             </Border>

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using inovasyposmobile.Models.Akuntansi;
 using inovasyposmobile.Models.Konsinyasi;
 using inovasyposmobile.Models.Masterdata;
 
@@ -165,7 +166,7 @@ namespace inovasyposmobile.Models.Transaksi.Penjualan
         public List<PenjualanBiayaModel>? PenjualanBiayas { get; set; }
 
         //for Penjualan Kasir
-        // public List<JurnalModel>? ListAkunPembayaran { get; set; }
+        public List<JurnalModel>? ListAkunPembayaran { get; set; }
 
         public MetodePembayaranModel? MetodePembayaran { get; set; }
 

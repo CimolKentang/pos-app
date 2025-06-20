@@ -23,8 +23,8 @@ namespace inovasyposmobile.ViewModels.Masterdata.Produk
             set => SetProperty(ref _isSelected, value);
         }
 
-        private decimal _count = 0;
-        public decimal Count
+        private int _count = 0;
+        public int Count
         {
             get => _count;
             set => SetProperty(ref _count, value);
