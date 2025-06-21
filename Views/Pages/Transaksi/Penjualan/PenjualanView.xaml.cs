@@ -21,7 +21,7 @@ public partial class PenjualanView : ContentPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
-		_penjualanViewModel.GetDatasCommand.Execute(null);
+		_penjualanViewModel.GetPenjualansCommand.Execute(null);
 	}
 
 	private void GoToPenjualanDetail(object sender, EventArgs e)
@@ -39,7 +39,6 @@ public partial class PenjualanView : ContentPage
 		if (sender is Grid tappedFrame)
 		{
 			var selectedItem = (PenjualanModel)tappedFrame.BindingContext;
-			Console.WriteLine($"You selected {selectedItem.PenjualanId}");
 			Shell.Current.GoToAsync($"PenjualanDetail?PenjualanId={selectedItem.PenjualanId}");
 		}
 	}

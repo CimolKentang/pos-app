@@ -25,8 +25,8 @@ namespace inovasyposmobile.ViewModels.Transaksi
         private readonly ValueDisplayViewModel _valueDisplayViewModel;
         private ObservableCollection<PenjualanModel> _penjualans = new ObservableCollection<PenjualanModel>();
         private PenjualanSearchParams SearchParams = new PenjualanSearchParams();
+
         private CancellationTokenSource? _debounceCts;
-        private string _searchText = "";
 
         public ObservableCollection<PenjualanModel> Penjualans
         {
@@ -34,6 +34,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
             set => SetProperty(ref _penjualans, value);
         }
 
+        private string _searchText = "";
         public string SearchText
         {
             get => _searchText;
@@ -48,13 +49,53 @@ namespace inovasyposmobile.ViewModels.Transaksi
             }
         }
 
-        public ICommand GetDatasCommand { get; }
+        private int _currentPage = 0;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set
+            {
+                SetProperty(ref _currentPage, value);
+                SearchParams.PageIndex = value;
+                OnPropertyChanged(nameof(ShowCurrentPage));
+
+                Task.Run(GetPenjualans);
+            }
+        }
+
+        public int ShowCurrentPage => CurrentPage + 1;
+
+        private int _totalPages = 0;
+        public int TotalPages
+        {
+            get => _totalPages;
+            set => SetProperty(ref _totalPages, value);
+        }
+
+        private int _pageSize = 10;
+        public int PageSize
+        {
+            get => _pageSize;
+            set
+            {
+                if (_pageSize != value)
+                {
+                    SetProperty(ref _pageSize, value);
+                    SearchParams.PageSize = value;
+                    Task.Run(GetPenjualans);   
+                }
+            }
+        }
+
+        public ICommand GetPenjualansCommand { get; }
+        public ICommand RefreshPenjualanCommand { get; }
 
         public PenjualanViewModel(IPenjualanService penjualanService, ValueDisplayViewModel valueDisplayViewModel)
         {
             _penjualanService = penjualanService;
             _valueDisplayViewModel = valueDisplayViewModel;
-            GetDatasCommand = new Command(async () => await GetPenjualansAsync());
+            GetPenjualansCommand = new Command(async () => await GetPenjualans());
+            RefreshPenjualanCommand = new Command(async () => await RefreshPenjualan());
         }
 
         public ICommand ShowDialogCommand => new Command(async () =>
@@ -73,10 +114,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
                 };
 
                 SearchParams.FilterGudang.Add(filter);
-                await GetPenjualansAsync();
-            }
-            else
-            {
+                await GetPenjualans();
             }
         });
 
@@ -92,7 +130,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
 
                 if (!token.IsCancellationRequested)
                 {
-                    await GetPenjualansAsync();
+                    await GetPenjualans();
                 }
             }
             catch (Exception)
@@ -101,7 +139,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
             }
         }
 
-        private async Task GetPenjualansAsync()
+        private async Task GetPenjualans()
         {
             IsLoading = true;
 
@@ -113,26 +151,40 @@ namespace inovasyposmobile.ViewModels.Transaksi
                 {
                     Penjualans.Clear();
 
+                    TotalPages = penjualan.Data.TotalPages;
+
                     foreach (var penjualanItem in penjualan.Data.Items)
                     {
                         Penjualans.Add(penjualanItem);
                     }
+
+                    Console.WriteLine(penjualan.Data.CurrentPage);
+                    Console.WriteLine(penjualan.Data.PageSize);
+                    Console.WriteLine(penjualan.Data.TotalItem);
+                    Console.WriteLine(penjualan.Data.TotalPages);
+                    Console.WriteLine(penjualan.Data.HasNextPage);
+                    Console.WriteLine(penjualan.Data.HasPreviousPage);
                 }
             }
             catch (InternetException ex)
             {
                 await Toast.Make(ex.Message, ToastDuration.Short).Show();
-                // await DialogService.ShowAlertAsync("Connection Error", ex.Message, "OK");
             }
             catch (ApiException ex)
             {
                 await Toast.Make(ex.Message, ToastDuration.Short).Show();
-                // await DialogService.ShowAlertAsync("API Error", ex.Message, "OK");
             }
             finally
             {
                 IsLoading = false;
             }
+        }
+
+        private async Task RefreshPenjualan()
+        {
+            IsRefreshing = true;
+            await GetPenjualans();
+            IsRefreshing = false;
         }
     }
 }
