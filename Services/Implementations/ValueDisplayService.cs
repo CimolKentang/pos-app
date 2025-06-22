@@ -35,7 +35,7 @@ namespace inovasyposmobile.Services.Implementations
             _connectivity = connectivity;
         }
 
-        public async Task<BaseResponse<SearchResponse<ValueDisplayFilterModel>>?> GetAllAsync(string selectMultipleFor, string search)
+        public async Task<BaseResponse<SearchResponse<ValueDisplayFilterModel>>?> GetAllAsync(string selectMultipleFor, string search, int pageIndex)
         {
             if (_connectivity.NetworkAccess != NetworkAccess.Internet)
             {
@@ -64,6 +64,7 @@ namespace inovasyposmobile.Services.Implementations
                         searchParamsObject = new PelangganSearchParams();
                         ((PelangganSearchParams)searchParamsObject).IsValueDisPlay = true;
                         ((PelangganSearchParams)searchParamsObject).Search = search;
+                        ((PelangganSearchParams)searchParamsObject).PageIndex = pageIndex;
                         apiUrl = "masterdata/pelanggan/";
                         response = await _httpCustomerClient.PostAsJsonAsync($"{apiUrl}search", searchParamsObject);
                         break;
@@ -83,6 +84,7 @@ namespace inovasyposmobile.Services.Implementations
                         ((AkunSearchParams)searchParamsObject).Search = search;
                         ((AkunSearchParams)searchParamsObject).IsForPenjualan = true;
                         ((AkunSearchParams)searchParamsObject).SortDir = "asc";
+                        ((AkunSearchParams)searchParamsObject).PageIndex = pageIndex;
                         apiUrl = "akuntansi/akun/search";
                         response = await _httpPosClient.PostAsJsonAsync(apiUrl, searchParamsObject);
                         break;

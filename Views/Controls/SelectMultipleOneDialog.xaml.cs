@@ -15,6 +15,17 @@ public partial class SelectMultipleOneDialog : Popup
 		InitializeComponent();
 		BindingContext = _valueDisplayView = valueDisplayView;
 		_selectMultipleFor = selectMultipleFor;
+
+		MyCollectionView.RemainingItemsThresholdReachedCommandParameter = selectMultipleFor;
+
+		// height and width relative to device screen
+		var screen = DeviceDisplay.MainDisplayInfo;
+		double screenWidth = screen.Width / screen.Density;
+		double screenHeight = screen.Height / screen.Density;
+
+		Container.HeightRequest = screenHeight * 0.6;
+		Container.WidthRequest = screenWidth * 0.9;
+
 		LoadData();
 	}
 
@@ -38,9 +49,9 @@ public partial class SelectMultipleOneDialog : Popup
 	private void OnItemTapped(object sender, EventArgs e)
 	{
 		// Reset all items' background color first
-		foreach (var item in CollectionView.ItemsSource)
+		foreach (var item in MyCollectionView.ItemsSource)
 		{
-			if (CollectionView.ItemTemplate.CreateContent() is ViewCell cell && cell.View is Border border)
+			if (MyCollectionView.ItemTemplate.CreateContent() is ViewCell cell && cell.View is Border border)
 			{
 				border.Stroke = Colors.LightGray;
             	border.BackgroundColor = Colors.Transparent;

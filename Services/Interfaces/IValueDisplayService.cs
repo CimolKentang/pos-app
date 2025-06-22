@@ -9,6 +9,6 @@ namespace inovasyposmobile.Services.Interfaces
 {
     public interface IValueDisplayService
     {
-        Task<BaseResponse<SearchResponse<ValueDisplayFilterModel>>?> GetAllAsync(string selectMultipleFor, string search);
+        Task<BaseResponse<SearchResponse<ValueDisplayFilterModel>>?> GetAllAsync(string selectMultipleFor, string search, int pageIndex);
     }
 }

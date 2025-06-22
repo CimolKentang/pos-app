@@ -4,70 +4,199 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels"
              xmlns:model="clr-namespace:inovasyposmobile.Models.Filters"
-             x:Class="inovasyposmobile.Views.Controls.SelectMultipleOneDialog"
-             Size="400,500">
-
-    <RefreshView
-        x:DataType="viewModel:ValueDisplayViewModel"
-        IsRefreshing="{Binding IsRefreshing}"
-        Command="{Binding GetDatasCommand}">
-
-        <Grid>
-
+             x:Class="inovasyposmobile.Views.Controls.SelectMultipleOneDialog">
+        <Grid
+            x:Name="Container"
+            x:DataType="viewModel:ValueDisplayViewModel"
+            RowDefinitions="Auto,*,Auto"
+            BackgroundColor="{AppThemeBinding Dark=#1E1E1E,Light=White}">
             <VerticalStackLayout
-                VerticalOptions="Fill"
-                IsVisible="{Binding IsNotLoading}">
-
-                <CollectionView 
-                        x:Name="CollectionView"
-                        ItemsSource="{Binding Datas}">
-
-                    <CollectionView.ItemTemplate>
-
-                        <DataTemplate x:DataType="model:ValueDisplayFilterModel">
-
-                            <Border
-                                Stroke="Transparent">
-                                <VerticalStackLayout>
-
-                                    <StackLayout
-                                        Padding="10">
-                                        <Label Text="{Binding Display}" FontAttributes="Bold" />
-                                    </StackLayout>
-
-                                    <BoxView 
-                                        HeightRequest="1"
-                                        BackgroundColor="Black"
-                                        HorizontalOptions="Fill" />
-
-                                </VerticalStackLayout>
-
-                                <Border.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="OnItemTapped"/>
-                                </Border.GestureRecognizers>
-                            </Border>
-
-                        </DataTemplate>
-
-                    </CollectionView.ItemTemplate>
-                        
-                </CollectionView>
-
+                Grid.Row="0">
+                <Grid
+                    ColumnDefinitions="*,Auto"
+                    Padding="10">
+                    <Label
+                        x:Name="Title"
+                        Grid.Column="0"
+                        FontSize="17"
+                        FontAttributes="Bold"
+                        Text="Pilih data" />
+                    <ActivityIndicator 
+                        Grid.Row="1"
+                        IsVisible="{Binding IsLoading}"
+                        IsRunning="True"
+                        HorizontalOptions="End"
+                        WidthRequest="20" 
+                        HeightRequest="20"
+                        Color="{AppThemeBinding Dark=White,Light=Black}" />
+                </Grid>
+                <BoxView
+                    HeightRequest="2" />
             </VerticalStackLayout>
-
-            <Grid 
-                ColumnDefinitions="*" 
-                RowDefinitions="*"
-                IsVisible="{Binding IsLoading}">
-                <ActivityIndicator 
-                    IsRunning="True"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    WidthRequest="50" HeightRequest="50"
-                    Color="Black" />
-            </Grid>
-
+            <CollectionView 
+                x:Name="MyCollectionView"
+                Grid.Row="1"
+                IsVisible="{Binding HasData}"
+                RemainingItemsThreshold="0"
+                RemainingItemsThresholdReachedCommand="{Binding ScrollDataCommand}"
+                ItemsSource="{Binding Datas}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ValueDisplayFilterModel">
+                        <Border
+                            Stroke="Transparent">
+                            <VerticalStackLayout>
+                                <StackLayout
+                                    Padding="10">
+                                    <Label 
+                                        Text="{Binding Display}" />
+                                </StackLayout>
+                                <BoxView 
+                                    HeightRequest="1"
+                                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                                    HorizontalOptions="Fill" />
+                            </VerticalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnItemTapped"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label
+                Grid.Row="1"
+                IsVisible="{Binding HasNoData}"
+                VerticalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="Tidak ada data untuk ditampilkan" />
+            <VerticalStackLayout
+                Grid.Row="2">
+                <BoxView
+                    HeightRequest="2" />
+                <VerticalStackLayout
+                    Padding="10">
+                    <Label>
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        TargetType="Label"
+                                        Binding="{Binding HasNextPage}"
+                                        Value="True">
+                                        <Setter Property="Text" Value="Scroll untuk melihat yang lainnya" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <HorizontalStackLayout
+                        Spacing="5">
+                        <Label
+                            Text="Ditampilkan" />
+                        <Label 
+                            Text="{Binding ItemNumber}" />
+                        <Label
+                            Text="dari" />
+                        <Label
+                            Text="{Binding TotalItem}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
         </Grid>
-
-    </RefreshView>
+        <!-- <Grid
+            Grid.Row="1"
+            VerticalOptions="Center"
+            MinimumHeightRequest="250"
+            MaximumHeightRequest="450"
+            BackgroundColor="{AppThemeBinding Dark=#1E1E1E,Light=White}"
+            RowDefinitions="Auto,*,Auto">
+            <VerticalStackLayout
+                Grid.Row="0">
+                <Grid
+                    ColumnDefinitions="*,Auto"
+                    HorizontalOptions="Fill"
+                    Padding="10">
+                    <Label
+                        Grid.Row="0"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        Text="Pilih Data" />
+                    <ActivityIndicator 
+                        Grid.Row="1"
+                        IsVisible="{Binding IsLoading}"
+                        IsRunning="True"
+                        HorizontalOptions="End"
+                        WidthRequest="20" 
+                        HeightRequest="20"
+                        Color="{AppThemeBinding Dark=White,Light=Black}" />
+                </Grid>
+                <BoxView
+                    HeightRequest="2"
+                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}" />
+            </VerticalStackLayout>
+            <CollectionView 
+                x:Name="CollectionView"
+                Grid.Row="1"
+                RemainingItemsThreshold="0"
+                RemainingItemsThresholdReachedCommand="{Binding ScrollDataCommand}"
+                ItemsSource="{Binding Datas}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ValueDisplayFilterModel">
+                        <Border
+                            Stroke="Transparent">
+                            <VerticalStackLayout>
+                                <StackLayout
+                                    Padding="10">
+                                    <Label 
+                                        Text="{Binding Display}" />
+                                </StackLayout>
+                                <BoxView 
+                                    HeightRequest="1"
+                                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                                    HorizontalOptions="Fill" />
+                            </VerticalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnItemTapped"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <VerticalStackLayout
+                Grid.Row="2">
+                <BoxView
+                    HeightRequest="2" />
+                <VerticalStackLayout
+                    Padding="10">
+                    <Label>
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Setter Property="FontAttributes" Value="Bold" />
+                                <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        TargetType="Label"
+                                        Binding="{Binding HasNextPage}"
+                                        Value="True">
+                                        <Setter Property="Text" Value="Scroll untuk melihat yang lainnya" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <HorizontalStackLayout
+                        Spacing="5">
+                        <Label
+                            Text="Ditampilkan" />
+                        <Label
+                            Text="{Binding ItemNumber}" />
+                        <Label
+                            Text="Dari" />
+                        <Label
+                            Text="{Binding TotalItem}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid> -->
 </toolkit:Popup>
