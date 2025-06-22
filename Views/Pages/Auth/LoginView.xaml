@@ -6,6 +6,9 @@
              Title="Login">
     <ScrollView
         x:DataType="authVM:LoginViewModel">
+        <ScrollView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="UnfocusAllEntry" />
+        </ScrollView.GestureRecognizers>
 
         <VerticalStackLayout
             VerticalOptions="Center"
@@ -18,8 +21,12 @@
 
             <Border>
                 <Entry
-                    Text="{Binding Username}"
-                    Placeholder="Username" />
+                    x:Name="UsernameEntry"
+                    Keyboard="Text"
+                    Placeholder="Username"
+                    ReturnType="Next"
+                    Completed="UsernameCompleted"
+                    Text="{Binding Username}" />
             </Border>
 
             <Border>
@@ -27,6 +34,7 @@
                     ColumnDefinitions="*,Auto"
                     RowDefinitions="Auto">
                     <Entry
+                        x:Name="PasswordEntry"
                         Grid.Column="0"
                         Text="{Binding Password}"
                         Placeholder="Password"
