@@ -8,143 +8,155 @@
              xmlns:masterdataModel="clr-namespace:inovasyposmobile.Models.Masterdata"
              x:Class="inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components.PenjualanCreateView"
              Title="Tambah Penjualan">
-
         <Grid
             x:DataType="penjualanCreateVM:PenjualanCreateViewModel"
             ColumnSpacing="0"
             RowSpacing="0"
             RowDefinitions="*,Auto">
-
-            <listView:SfListView
-                IsVisible="{Binding IsNotLoading}"
-                Grid.Row="0"
-                Background="White"
-                Padding="10"
-                AutoFitMode="Height"
-                HorizontalOptions="Fill"
-                ItemSpacing="10"
-                ItemsSource="{Binding Produks}">
-
-                <listView:SfListView.ItemTemplate>
-
-                    <DataTemplate
-                        x:DataType="produkVM:ProdukWithStokViewModel">
-
-                        <syncEffectsView:SfEffectsView
-                            RippleBackground="Black"
-                            TouchDownEffects="Ripple">
-                            <Grid>
-                                <Border 
-                                    Stroke="Transparent"
-                                    StrokeShape="RoundRectangle 10">
-                                    <VerticalStackLayout>
-                                        <Grid
-                                            Margin="0"
-                                            RowDefinitions="Auto, Auto, Auto, Auto"
-                                            RowSpacing="0">
-                                            <Grid.GestureRecognizers>
-                                                <TapGestureRecognizer Command="{Binding SelectToggleCommand}" />
-                                            </Grid.GestureRecognizers>
-                                            <!-- image -->
-                                            <Image
-                                                IsVisible="{Binding HasNoImage}"
-                                                Grid.Row="0"
-                                                Source="no_image.png"
-                                                HeightRequest="145"
-                                                Aspect="AspectFit" />
-                                            
-                                            <Image
-                                                IsVisible="{Binding HasImage}"
-                                                Grid.Row="0"
-                                                Source="{Binding ProdukWithStok.Gambar}"
-                                                HeightRequest="145"
-                                                Aspect="AspectFit" />
-
-                                            <Label
-                                                Grid.Row="1"
-                                                Margin="10,10,0,4"
-                                                LineBreakMode="TailTruncation"
-                                                MaxLines="1"
-                                                FontAttributes="Bold"
-                                                Style="{DynamicResource TitleLabelStyle}"
-                                                Text="{Binding ProdukWithStok.NamaProduk}" />
-
-                                            <StackLayout
-                                                Grid.Row="2"
-                                                Margin="10,0,10,8"
-                                                Orientation="Vertical"
-                                                Spacing="2">
-                                                <Label
-                                                    FontSize="16"
-                                                    LineHeight="{OnPlatform Android=1.25,Default=-1}"
-                                                    Text="{Binding ProdukWithStok.HargaJual, StringFormat='Harga: Rp {0:N0}'}"/>
-                                                <Label
-                                                    FontSize="16"
-                                                    LineHeight="{OnPlatform Android=1.25,Default=-1}"
-                                                    Text="{Binding ProdukWithStok.Saldo, StringFormat='Stok: {0:N0}'}" />
-                                            </StackLayout>
-                                        </Grid>
-                                        <VerticalStackLayout
-                                            Grid.Row="3"
-                                            IsVisible="{Binding IsSelected}"
-                                            MinimumHeightRequest="30"
-                                            Margin="10,10,0,0">
-                                            <FlexLayout
-                                                AlignItems="Center"
-                                                JustifyContent="SpaceEvenly">
+            <RefreshView
+                IsRefreshing="{Binding IsRefreshing}"
+                Command="{Binding RefreshPenjualanKasirCommand}"
+                Grid.Row="0">
+                <listView:SfListView
+                    Padding="10"
+                    AutoFitMode="Height"
+                    HorizontalOptions="Fill"
+                    ItemSpacing="10"
+                    LoadMorePosition="End"
+                    LoadMoreOption="Auto"
+                    LoadMoreCommand="{Binding HandleScrollCommand}"
+                    ItemsSource="{Binding Produks}">
+                    <listView:SfListView.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="produkVM:ProdukWithStokViewModel">
+                            <syncEffectsView:SfEffectsView
+                                RippleBackground="Black"
+                                TouchDownEffects="Ripple">
+                                <Grid>
+                                    <Border 
+                                        Stroke="Transparent"
+                                        StrokeShape="RoundRectangle 10">
+                                        <VerticalStackLayout>
+                                            <Grid
+                                                Margin="0"
+                                                RowDefinitions="Auto, Auto, Auto, Auto"
+                                                RowSpacing="0">
+                                                <Grid.GestureRecognizers>
+                                                    <TapGestureRecognizer Command="{Binding SelectToggleCommand}" />
+                                                </Grid.GestureRecognizers>
+                                                <!-- image -->
                                                 <Border
-                                                    Stroke="{StaticResource Primary}"
-                                                    BackgroundColor="{StaticResource Primary}"
-                                                    StrokeShape="RoundRectangle 5"
-                                                    WidthRequest="30"
-                                                    HeightRequest="30">
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding IncreaseCountCommand}" />
-                                                    </Border.GestureRecognizers>
-                                                    <Label
+                                                    IsVisible="{Binding HasNoImage}"
+                                                    Grid.Row="0"
+                                                    HeightRequest="145">
+                                                    <Border.StrokeShape>
+                                                        <RoundRectangle
+                                                            CornerRadius="10,10,0,0" />
+                                                    </Border.StrokeShape>
+                                                    <VerticalStackLayout
                                                         VerticalOptions="Center"
-                                                        HorizontalOptions="Center"
-                                                        TextColor="White"
-                                                        LineHeight="18"
-                                                        FontSize="18"
-                                                        Text="+" />
+                                                        Spacing="5">
+                                                        <Label
+                                                            FontFamily="MaterialSymbols"
+                                                            FontSize="35"
+                                                            HorizontalOptions="Center"
+                                                            Text="&#xEf81;" />
+                                                        <Label
+                                                            HorizontalTextAlignment="Center"
+                                                            FontAttributes="Italic"
+                                                            Text="Tidak ada gambar" />
+                                                    </VerticalStackLayout>
                                                 </Border>
+                                                <Image
+                                                    IsVisible="{Binding HasImage}"
+                                                    Grid.Row="0"
+                                                    Source="{Binding ProdukWithStok.Gambar}"
+                                                    HeightRequest="145"
+                                                    Aspect="AspectFit" />
                                                 <Label
-                                                    Text="{Binding Count}"
-                                                    FontSize="20" />
-                                                <Border
-                                                    Stroke="{StaticResource Danger}"
-                                                    BackgroundColor="{StaticResource Danger}"
-                                                    StrokeShape="RoundRectangle 5"
-                                                    WidthRequest="30"
-                                                    HeightRequest="30">
-                                                    <Border.GestureRecognizers>
-                                                        <TapGestureRecognizer Command="{Binding DecreaseCountCommand}" />
-                                                    </Border.GestureRecognizers>
+                                                    Grid.Row="1"
+                                                    Margin="10,10,0,4"
+                                                    LineBreakMode="TailTruncation"
+                                                    MaxLines="1"
+                                                    FontAttributes="Bold"
+                                                    Style="{DynamicResource TitleLabelStyle}"
+                                                    Text="{Binding ProdukWithStok.NamaProduk}" />
+                                                <StackLayout
+                                                    Grid.Row="2"
+                                                    Margin="10,0,10,8"
+                                                    Orientation="Vertical"
+                                                    Spacing="2">
                                                     <Label
-                                                        VerticalOptions="Center"
-                                                        HorizontalOptions="Center"
-                                                        LineHeight="20"
-                                                        FontSize="18"
-                                                        TextColor="White"
-                                                        Text="-" />
-                                                </Border>
-                                            </FlexLayout>
+                                                        FontSize="16"
+                                                        LineHeight="{OnPlatform Android=1.25,Default=-1}"
+                                                        Text="{Binding ProdukWithStok.HargaJual, StringFormat='Harga: Rp {0:N0}'}"/>
+                                                    <Label
+                                                        FontSize="16"
+                                                        LineHeight="{OnPlatform Android=1.25,Default=-1}"
+                                                        Text="{Binding ProdukWithStok.Saldo, StringFormat='Stok: {0:N0}'}" />
+                                                </StackLayout>
+                                            </Grid>
+                                            <VerticalStackLayout
+                                                Grid.Row="3"
+                                                IsVisible="{Binding IsSelected}"
+                                                MinimumHeightRequest="30"
+                                                Margin="10,10,0,0">
+                                                <FlexLayout
+                                                    AlignItems="Center"
+                                                    JustifyContent="SpaceEvenly">
+                                                    <Border
+                                                        Stroke="{StaticResource Primary}"
+                                                        BackgroundColor="{StaticResource Primary}"
+                                                        StrokeShape="RoundRectangle 5"
+                                                        WidthRequest="30"
+                                                        HeightRequest="30">
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding IncreaseCountCommand}" />
+                                                        </Border.GestureRecognizers>
+                                                        <Label
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="Center"
+                                                            TextColor="White"
+                                                            FontFamily="MaterialSymbols"
+                                                            LineHeight="18"
+                                                            FontSize="18"
+                                                            Text="&#xE145;" />
+                                                    </Border>
+                                                    <Label
+                                                        Text="{Binding Count}"
+                                                        FontSize="20" />
+                                                    <Border
+                                                        Stroke="{StaticResource Danger}"
+                                                        BackgroundColor="{StaticResource Danger}"
+                                                        StrokeShape="RoundRectangle 5"
+                                                        WidthRequest="30"
+                                                        HeightRequest="30">
+                                                        <Border.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding DecreaseCountCommand}" />
+                                                        </Border.GestureRecognizers>
+                                                        <Label
+                                                            VerticalOptions="Center"
+                                                            HorizontalOptions="Center"
+                                                            FontFamily="MaterialSymbols"
+                                                            LineHeight="20"
+                                                            FontSize="18"
+                                                            TextColor="White"
+                                                            Text="&#xE15b;" />
+                                                    </Border>
+                                                </FlexLayout>
+                                            </VerticalStackLayout>
                                         </VerticalStackLayout>
-                                    </VerticalStackLayout>
-                                </Border>
-                            </Grid>
-                        </syncEffectsView:SfEffectsView>
-                    </DataTemplate>
-
-                </listView:SfListView.ItemTemplate>
-
-                <!--  Layout to customize number of columns in SfListView  -->
-                <listView:SfListView.ItemsLayout>
-                    <listView:GridLayout SpanCount="{OnPlatform Default=5, Android=2, iOS=2}"/>
-                </listView:SfListView.ItemsLayout>
-            </listView:SfListView>
-
+                                    </Border>
+                                </Grid>
+                            </syncEffectsView:SfEffectsView>
+                        </DataTemplate>
+                    </listView:SfListView.ItemTemplate>
+                    <!--  Layout to customize number of columns in SfListView  -->
+                    <listView:SfListView.ItemsLayout>
+                        <listView:GridLayout SpanCount="{OnPlatform Default=5, Android=2, iOS=2}"/>
+                    </listView:SfListView.ItemsLayout>
+                </listView:SfListView>
+            </RefreshView>
             <ActivityIndicator 
                 IsVisible="{Binding IsLoading}"
                 Grid.Row="0"
@@ -153,51 +165,85 @@
                 VerticalOptions="Center"
                 WidthRequest="50" HeightRequest="50"
                 Color="{StaticResource Primary}" />
-
-            <Grid
+            <Border
                 Grid.Row="1"
-                IsVisible="{Binding HasSelectedProduk}"
-                RowDefinitions="Auto,*">
-                <BoxView
-                    Grid.Row="0"
-                    HeightRequest="1"
-                    HorizontalOptions="Fill"
-                    BackgroundColor="Black" />
-
-                <FlexLayout
-                    Grid.Row="1"
-                    HeightRequest="50"
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween"
-                    Padding="10,0,10,0">
-                    <HorizontalStackLayout>
-                        <Label
-                            FontSize="16"
-                            Text="Total Harga: " />
-                        <Label
-                            FontSize="16"
-                            Text="{Binding SubTotal, StringFormat='Rp {0:N0}'}" />
-                    </HorizontalStackLayout>
-
-                    <Border
-                        Padding="10,0,10,0"
-                        Stroke="{StaticResource Primary}"
-                        StrokeShape="RoundRectangle 20"
-                        BackgroundColor="{StaticResource Primary}">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="ProcessPenjualan" />
-                        </Border.GestureRecognizers>
-                        <FlexLayout
-                            AlignItems="Center">
+                BackgroundColor="{AppThemeBinding Dark=Black,Light=White}"
+                StrokeThickness="0">
+                <Border.Shadow>
+                    <Shadow
+                        Offset="0,-5"
+                        Radius="7"
+                        Brush="{AppThemeBinding Dark=White,Light=Black}"
+                        Opacity="0.2" />
+                </Border.Shadow>
+                <VerticalStackLayout>
+                    <VerticalStackLayout
+                        Padding="10">
+                        <Label>
+                            <Label.Style>
+                                <Style TargetType="Label">
+                                    <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                                    <Style.Triggers>
+                                        <DataTrigger
+                                            TargetType="Label"
+                                            Binding="{Binding HasNextPage}"
+                                            Value="True">
+                                            <Setter Property="Text" Value="Scroll untuk melihat yang lainnya" />    
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Label.Style>
+                        </Label>
+                        <HorizontalStackLayout
+                            Spacing="5">
                             <Label
-                                FontSize="16"
-                                Text="Proses"
-                                TextColor="White" />
+                                Text="Ditampilkan" />
+                            <Label
+                                Text="{Binding ItemNumber}" />
+                            <Label
+                                Text="dari" />
+                            <Label
+                                Text="{Binding TotalItem}" />
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                    <Grid
+                        IsVisible="{Binding HasSelectedProduk}"
+                        RowDefinitions="Auto,*">
+                        <FlexLayout
+                            Grid.Row="1"
+                            HeightRequest="50"
+                            AlignItems="Center"
+                            JustifyContent="SpaceBetween"
+                            Padding="10,0,10,0">
+                            <HorizontalStackLayout>
+                                <Label
+                                    FontSize="16"
+                                    TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                                    Text="Total Harga: " />
+                                <Label
+                                    FontSize="16"
+                                    TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                                    Text="{Binding SubTotal, StringFormat='Rp {0:N0}'}" />
+                            </HorizontalStackLayout>
+                            <Border
+                                Padding="10,0,10,0"
+                                Stroke="{StaticResource Primary}"
+                                StrokeShape="RoundRectangle 20"
+                                BackgroundColor="{StaticResource Primary}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="ProcessPenjualan" />
+                                </Border.GestureRecognizers>
+                                <FlexLayout
+                                    AlignItems="Center">
+                                    <Label
+                                        FontSize="16"
+                                        Text="Proses"
+                                        TextColor="White" />
+                                </FlexLayout>
+                            </Border>
                         </FlexLayout>
-                    </Border>
-                </FlexLayout>
-            </Grid>
-        
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
         </Grid>
-
 </ContentPage>

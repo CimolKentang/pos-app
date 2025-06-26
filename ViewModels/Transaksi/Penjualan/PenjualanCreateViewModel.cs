@@ -45,6 +45,8 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             }
         }
 
+        // selected produks for display
+        // penjualan details for sending the data to API
         private ObservableCollection<ProdukWithStokViewModel> _selectedProduks = new();
         public ObservableCollection<ProdukWithStokViewModel> SelectedProduks
         {
@@ -68,6 +70,38 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             get => _produkSearchParams;
             set => SetProperty(ref _produkSearchParams, value);
         }
+
+        #region for fetching produks
+        private int _currentPage = 0;
+        public int CurrentPage
+        {
+            get => _currentPage;
+            set => SetProperty(ref _currentPage, value);
+        }
+
+        private int _totalItem = 0;
+        public int TotalItem
+        {
+            get => _totalItem;
+            set => SetProperty(ref _totalItem, value);
+        }
+
+        private int _itemNumber = 0;
+        public int ItemNumber
+        {
+            get => _itemNumber;
+            set => SetProperty(ref _itemNumber, value);
+        }
+
+        private bool _hasNextPage = false;
+        public bool HasNextPage
+        {
+            get => _hasNextPage;
+            set => SetProperty(ref _hasNextPage, value);
+        }
+
+        private bool _isHandlingScroll = false;
+        #endregion
 
         private bool _hasSelectedProduk = false;
         public bool HasSelectedProduk
@@ -99,6 +133,13 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             {
                 SetProperty(ref _jurnals, value);
             }
+        }
+
+        private bool _hasJurnal = false;
+        public bool HasJurnal
+        {
+            get => _hasJurnal;
+            set => SetProperty(ref _hasJurnal, value);
         }
 
         private decimal _total = 0;
@@ -186,6 +227,8 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
         public ICommand ProcessPenjualanKasirCommand { get; }
         public ICommand SelectAkunDialogCommand { get; }
         public ICommand SubmitPenjualanCommand { get; }
+        public ICommand RefreshPenjualanKasirCommand { get; }
+        public ICommand HandleScrollCommand { get; }
 
         public PenjualanCreateViewModel(
             IPenjualanService penjualanService,
@@ -200,9 +243,11 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             MetodePembayaran = new MetodePembayaranModel();
 
             InitPenjualanKasirCommand = new Command(async () => await InitPenjualanKasir());
+            RefreshPenjualanKasirCommand = new Command(async () => await RefreshPenjualanKasir());
             SelectAkunDialogCommand = new Command(async () => await SelectAkunDialog());
             ProcessPenjualanKasirCommand = new Command(ProcessPenjualanKasir);
             SubmitPenjualanCommand = new Command(async () => await SubmitPenjualan());
+            HandleScrollCommand = new Command(async () => await HandleScroll());
         }
 
         private async Task InitPenjualanKasir()
@@ -224,29 +269,9 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
                     };
 
                     ProdukSearchParams.FilterGudang.Add(filterGudang);
-
                     ProdukSearchParams.MinStok = 1;
-                    var produks = await _produkService.GetProdukWithStoks(ProdukSearchParams);
 
-                    if (produks?.Data?.Items != null)
-                    {
-                        Produks.Clear();
-
-                        foreach (var item in produks.Data.Items)
-                        {
-                            var produkViewModel = new ProdukWithStokViewModel();
-                            produkViewModel.ProdukWithStok = item;
-
-                            if (!string.IsNullOrEmpty(item.Gambar))
-                            {
-                                produkViewModel.HasImage = true;
-                            }
-
-                            Produks.Add(produkViewModel);
-                        }
-
-                        SubscribeToAllProducts();
-                    }
+                    await GetProduksWithStok();
                 }
             }
             catch (InternetException ex)
@@ -261,6 +286,61 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             {
                 IsLoading = false;
             }
+        }
+
+        private async Task GetProduksWithStok()
+        {
+            ProdukSearchParams.PageIndex = CurrentPage;
+            var produks = await _produkService.GetProdukWithStoks(ProdukSearchParams);
+
+            if (produks?.Data?.Items != null)
+            {
+                foreach (var item in produks.Data.Items)
+                {
+                    var produkViewModel = new ProdukWithStokViewModel();
+                    produkViewModel.ProdukWithStok = item;
+
+                    if (!string.IsNullOrEmpty(item.Gambar))
+                    {
+                        produkViewModel.HasImage = true;
+                    }
+
+                    Produks.Add(produkViewModel);
+                }
+
+                HasNextPage = produks.Data.HasNextPage;
+                TotalItem = produks.Data.TotalItem;
+                ItemNumber = Produks.Count;
+
+                SubscribeToAllProducts();
+            }
+        }
+
+        private async Task HandleScroll()
+        {
+            if (_isHandlingScroll == true) return;
+
+            if (HasNextPage == true)
+            {
+                _isHandlingScroll = true;
+                IsLoading = true;
+
+                CurrentPage += 1;
+                await GetProduksWithStok();
+
+                _isHandlingScroll = false;
+                IsLoading = false;
+            }
+        }
+
+        private async Task RefreshPenjualanKasir()
+        {
+            IsRefreshing = true;
+
+            ClearData();
+            await InitPenjualanKasir();
+
+            IsRefreshing = false;
         }
 
         private void ProcessPenjualanKasir()
@@ -337,6 +417,15 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
                     HitungTotalDebitAkun();
                     SubscribeToAllJurnals();
+                }
+
+                if (Jurnals.Count > 0)
+                {
+                    HasJurnal = true;
+                }
+                else
+                {
+                    HasJurnal = false;
                 }
             }
         }
@@ -578,7 +667,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
                     Pajak = Penjualan.Pajak,
                     SubTotal = SubTotal,
                     BeratPengiriman = 0, //?
-                    
+
                     TotalDiskon = 0,
                     TotalBiaya = 0,
                     Total = Total,
@@ -615,9 +704,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
                 if (response?.Succeeded == true)
                 {
-                    SelectedProduks.Clear();
-                    PenjualanDetails.Clear();
-                    HasSelectedProduk = false;
+                    ClearData();
                     await Shell.Current.GoToAsync("..");
                 }
             }
@@ -626,6 +713,19 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
                 throw;
             }
+        }
+
+        private void ClearData()
+        {
+            SelectedProduks.Clear();
+            PenjualanDetails.Clear();
+            Produks.Clear();
+            Jurnals.Clear();
+            CurrentPage = 0;
+            HasNextPage = false;
+            ItemNumber = 0;
+            TotalItem = 0;
+            HasSelectedProduk = false;
         }
     }
 }

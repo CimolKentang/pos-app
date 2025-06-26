@@ -13,10 +13,5 @@ public partial class PenjualanCreateConfirmView : ContentPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
-
-		if (BindingContext is PenjualanCreateViewModel penjualanCreateViewModel)
-		{
-			Console.WriteLine(penjualanCreateViewModel.Total);
-		}
 	}
 }

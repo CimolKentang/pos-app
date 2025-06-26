@@ -45,6 +45,7 @@ public static class MauiProgram
 			.ConfigureMauiHandlers(handlers =>
 			{
 				handlers.AddHandler<Entry, CustomEntryHandler>();
+				handlers.AddHandler<Editor, CustomEditorHandler>();
 			});
 
 		// http client with base address
