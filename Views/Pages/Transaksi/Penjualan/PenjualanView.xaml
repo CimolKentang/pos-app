@@ -4,11 +4,10 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:converter="clr-namespace:inovasyposmobile.Converters"
              xmlns:selector="clr-namespace:inovasyposmobile.Selectors"
-             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Transaksi"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Transaksi.Penjualan"
              xmlns:model="clr-namespace:inovasyposmobile.Models.Transaksi.Penjualan"
              x:Class="inovasyposmobile.Views.Pages.Transaksi.Penjualan.PenjualanView"
              Title="Penjualan">
-
     <ContentPage.Resources>
         <converter:DateTimeConverter x:Key="DateTimeConverter"></converter:DateTimeConverter>
         <converter:EmptyToDashConverter x:Key="EmptyToDashConverter"></converter:EmptyToDashConverter>
@@ -50,10 +49,15 @@
             Command="{Binding RefreshPenjualanCommand}">
             <CollectionView
                 x:Name="PenjualanCollection"
+                RemainingItemsThreshold="0"
+                RemainingItemsThresholdReachedCommand="{Binding HandleScrollCommand}"
                 ItemsSource="{Binding Penjualans}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:PenjualanModel">
                         <VerticalStackLayout>
+                            <VerticalStackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="GoToPenjualanDetail" />
+                            </VerticalStackLayout.GestureRecognizers>
                             <Grid
                                 ColumnDefinitions="*,*"
                                 RowDefinitions="Auto,Auto"
@@ -80,33 +84,42 @@
                                 <VerticalStackLayout
                                     Grid.Column="1"
                                     Grid.Row="0">
-                                    <HorizontalStackLayout
-                                        Spacing="5">
+                                    <Grid
+                                        ColumnDefinitions="Auto,*"
+                                        ColumnSpacing="5">
                                         <Label
+                                            Grid.Column="0"
                                             Text="Sales:" />
                                         <Label
+                                            Grid.Column="1"
                                             MaxLines="1"
                                             LineBreakMode="TailTruncation"
                                             Text="{Binding NamaSales}" />
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout
-                                        Spacing="5">
+                                    </Grid>
+                                    <Grid
+                                        ColumnDefinitions="Auto,*"
+                                        ColumnSpacing="5">
                                         <Label
+                                            Grid.Column="0"
                                             Text="Pelanggan:" />
                                         <Label
+                                            Grid.Column="1"
                                             MaxLines="1"
                                             LineBreakMode="TailTruncation"
                                             Text="{Binding NamaPelanggan}" />
-                                    </HorizontalStackLayout>
-                                    <HorizontalStackLayout
-                                        Spacing="5">
+                                    </Grid>
+                                    <Grid
+                                        ColumnDefinitions="Auto,*"
+                                        ColumnSpacing="5">
                                         <Label
+                                            Grid.Column="0"
                                             Text="Total:" />
                                         <Label
+                                            Grid.Column="1"
                                             MaxLines="1"
                                             LineBreakMode="TailTruncation"
                                             Text="{Binding Total,StringFormat='Rp. {0:N0}'}" />
-                                    </HorizontalStackLayout>
+                                    </Grid>
                                 </VerticalStackLayout>
                                 <VerticalStackLayout
                                     Grid.Row="1"
@@ -133,51 +146,48 @@
             VerticalOptions="Center"
             WidthRequest="50" HeightRequest="50"
             Color="{AppThemeBinding Dark=White,Light=Black}" />
-        <!-- <HorizontalStackLayout
+        <Border
             Grid.Row="2"
-            Padding="10">
-            <AbsoluteLayout>
+            StrokeThickness="0"
+            BackgroundColor="{AppThemeBinding Dark=Black,Light=White}">
+            <Border.Shadow>
+                <Shadow
+                    Brush="White"
+                    Offset="0,-5"
+                    Opacity="0.2"
+                    Radius="7" />
+            </Border.Shadow>
+            <VerticalStackLayout
+                Padding="10"
+                Spacing="5">
+                <Label>
+                    <Label.Style>
+                        <Style TargetType="Label">
+                            <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                            <Setter Property="FontAttributes" Value="Bold" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    TargetType="Label"
+                                    Binding="{Binding HasNextPage}"
+                                    Value="True">
+                                    <Setter Property="Text" Value="Scroll untuk melihat yang lainnya" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                </Label>
                 <HorizontalStackLayout
                     Spacing="5">
                     <Label
-                        VerticalOptions="Center"
-                        Text="Item per halaman:" />
-                    <Border
-                        Padding="3"
-                        StrokeShape="RoundRectangle 2">
-                        <Border.GestureRecognizers>
-                            <TapGestureRecognizer />
-                        </Border.GestureRecognizers>
-                        <Label
-                            Text="{Binding PageSize}" />
-                    </Border>
+                        Text="Ditampilkan" />
+                    <Label
+                        Text="{Binding ItemNumber}" />
+                    <Label
+                        Text="dari" />
+                    <Label
+                        Text="{Binding TotalItem}" />
                 </HorizontalStackLayout>
-                <CollectionView
-                    AbsoluteLayout.LayoutBounds="1,0,35,100"
-                    AbsoluteLayout.LayoutFlags="XProportional"
-                    BackgroundColor="red">
-                    <CollectionView.ItemsSource>
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>10</x:String>
-                            <x:String>25</x:String>
-                            <x:String>50</x:String>
-                            <x:String>100</x:String>
-                        </x:Array>
-                    </CollectionView.ItemsSource>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <VerticalStackLayout
-                                HeightRequest="25">
-                                <Label
-                                    VerticalOptions="Center"
-                                    HorizontalTextAlignment="End"
-                                    Text="{Binding}" />
-                            </VerticalStackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </AbsoluteLayout>
-        </HorizontalStackLayout> -->
+            </VerticalStackLayout>
+        </Border>
     </Grid>
-
 </ContentPage>

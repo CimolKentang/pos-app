@@ -17,7 +17,7 @@ using inovasyposmobile.Models.Transaksi.Penjualan;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 using inovasyposmobile.Views.Controls;
 
-namespace inovasyposmobile.ViewModels.Transaksi
+namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 {
     public class PenjualanViewModel : BaseViewModel
     {
@@ -44,51 +44,57 @@ namespace inovasyposmobile.ViewModels.Transaksi
                 {
                     SetProperty(ref _searchText, value);
                     SearchParams.Search = value;
-                    Task.Run(OnParamsChanged);
+                    Task.Run(OnSearchTextChanged);
                 }
             }
         }
+
+        private bool _hasNextPage = false;
+        public bool HasNextPage
+        {
+            get => _hasNextPage;
+            set
+            {
+                SetProperty(ref _hasNextPage, value);
+                OnPropertyChanged(nameof(HasNoNextPage));
+            }
+        }
+
+        public bool HasNoNextPage => !HasNextPage;
 
         private int _currentPage = 0;
         public int CurrentPage
         {
             get => _currentPage;
-            set
-            {
-                SetProperty(ref _currentPage, value);
-                SearchParams.PageIndex = value;
-                OnPropertyChanged(nameof(ShowCurrentPage));
-
-                Task.Run(GetPenjualans);
-            }
+            set => SetProperty(ref _currentPage, value);
         }
 
-        public int ShowCurrentPage => CurrentPage + 1;
-
-        private int _totalPages = 0;
-        public int TotalPages
+        private int _totalItem = 0;
+        public int TotalItem
         {
-            get => _totalPages;
-            set => SetProperty(ref _totalPages, value);
+            get => _totalItem;
+            set => SetProperty(ref _totalItem, value);
         }
 
-        private int _pageSize = 10;
-        public int PageSize
+        private int _itemNumber = 0;
+        public int ItemNumber
         {
-            get => _pageSize;
-            set
-            {
-                if (_pageSize != value)
-                {
-                    SetProperty(ref _pageSize, value);
-                    SearchParams.PageSize = value;
-                    Task.Run(GetPenjualans);   
-                }
-            }
+            get => _itemNumber;
+            set => SetProperty(ref _itemNumber, value);
         }
+
+        private bool _hasItem = false;
+        public bool HasItem
+        {
+            get => _hasItem;
+            set => SetProperty(ref _hasItem, value);
+        }
+
+        private bool _isHandlingScroll = false;
 
         public ICommand GetPenjualansCommand { get; }
         public ICommand RefreshPenjualanCommand { get; }
+        public ICommand HandleScrollCommand { get; }
 
         public PenjualanViewModel(IPenjualanService penjualanService, ValueDisplayViewModel valueDisplayViewModel)
         {
@@ -96,6 +102,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
             _valueDisplayViewModel = valueDisplayViewModel;
             GetPenjualansCommand = new Command(async () => await GetPenjualans());
             RefreshPenjualanCommand = new Command(async () => await RefreshPenjualan());
+            HandleScrollCommand = new Command(async () => await HandleScroll());
         }
 
         public ICommand ShowDialogCommand => new Command(async () =>
@@ -118,7 +125,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
             }
         });
 
-        private async Task OnParamsChanged()
+        private async Task OnSearchTextChanged()
         {
             _debounceCts?.Cancel();
             _debounceCts = new CancellationTokenSource();
@@ -130,6 +137,7 @@ namespace inovasyposmobile.ViewModels.Transaksi
 
                 if (!token.IsCancellationRequested)
                 {
+                    ClearData();
                     await GetPenjualans();
                 }
             }
@@ -145,25 +153,19 @@ namespace inovasyposmobile.ViewModels.Transaksi
 
             try
             {
+                SearchParams.PageIndex = CurrentPage;
                 var penjualan = await _penjualanService.GetAllAsync(SearchParams);
 
                 if (penjualan?.Data?.Items != null)
                 {
-                    Penjualans.Clear();
-
-                    TotalPages = penjualan.Data.TotalPages;
-
                     foreach (var penjualanItem in penjualan.Data.Items)
                     {
                         Penjualans.Add(penjualanItem);
                     }
 
-                    Console.WriteLine(penjualan.Data.CurrentPage);
-                    Console.WriteLine(penjualan.Data.PageSize);
-                    Console.WriteLine(penjualan.Data.TotalItem);
-                    Console.WriteLine(penjualan.Data.TotalPages);
-                    Console.WriteLine(penjualan.Data.HasNextPage);
-                    Console.WriteLine(penjualan.Data.HasPreviousPage);
+                    HasNextPage = penjualan.Data.HasNextPage;
+                    TotalItem = penjualan.Data.TotalItem;
+                    ItemNumber = Penjualans.Count;
                 }
             }
             catch (InternetException ex)
@@ -177,14 +179,43 @@ namespace inovasyposmobile.ViewModels.Transaksi
             finally
             {
                 IsLoading = false;
+                if (TotalItem > 0)
+                {
+                    HasItem = true;
+                }
+            }
+        }
+
+        private async Task HandleScroll()
+        {
+            if (_isHandlingScroll == true) return;
+
+            if (HasNextPage)
+            {
+                _isHandlingScroll = true;
+
+                CurrentPage += 1;
+                await GetPenjualans();
+
+                _isHandlingScroll = false;   
             }
         }
 
         private async Task RefreshPenjualan()
         {
             IsRefreshing = true;
+            ClearData();
             await GetPenjualans();
             IsRefreshing = false;
+        }
+
+        private void ClearData()
+        {
+            CurrentPage = 0;
+            TotalItem = 0;
+            ItemNumber = 0;
+            HasItem = false;
+            Penjualans.Clear();
         }
     }
 }

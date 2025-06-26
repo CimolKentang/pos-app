@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Maui.Views;
 using inovasyposmobile.Models.Transaksi.Penjualan;
 using inovasyposmobile.Services.Interfaces.Auth;
-using inovasyposmobile.ViewModels.Transaksi;
+using inovasyposmobile.ViewModels.Transaksi.Penjualan;
 using inovasyposmobile.Views.Controls;
 
 namespace inovasyposmobile.Views.Pages.Transaksi.Penjualan;
