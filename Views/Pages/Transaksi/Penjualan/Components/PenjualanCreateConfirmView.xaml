@@ -11,6 +11,7 @@
         x:DataType="penjualanCreateVM:PenjualanCreateViewModel"
         RowDefinitions="*,Auto">
         <ScrollView
+            IsVisible="{Binding IsNotLoading}"
             Grid.Row="0"
             VerticalOptions="Start"
             Padding="10,0,10,0">
@@ -236,13 +237,32 @@
                     </FlexLayout>
                 </VerticalStackLayout>
 
-                <Button
+                <Grid
                     Margin="0,10,0,0"
-                    TextColor="{AppThemeBinding Dark=White,Light=Black}"
-                    BackgroundColor="{StaticResource Primary}"
-                    Command="{Binding SubmitPenjualanCommand}"
-                    Text="Buat Penjualan" />
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <Button 
+                        Grid.Column="0"
+                        TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                        BackgroundColor="{StaticResource Danger}"
+                        Command="{Binding CancelPenjualanCommand}"
+                        Text="Batalkan" />
+                    <Button
+                        Grid.Column="1"
+                        TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                        BackgroundColor="{StaticResource Primary}"
+                        Command="{Binding SubmitPenjualanCommand}"
+                        Text="Buat Penjualan" />
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
+        <ActivityIndicator 
+            IsVisible="{Binding IsLoading}"
+            Grid.Row="0"
+            IsRunning="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="50" HeightRequest="50"
+            Color="{StaticResource Primary}" />
     </Grid>
 </ContentPage>

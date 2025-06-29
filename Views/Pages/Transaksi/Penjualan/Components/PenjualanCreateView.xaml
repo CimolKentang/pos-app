@@ -178,11 +178,13 @@
                 </Border.Shadow>
                 <VerticalStackLayout>
                     <VerticalStackLayout
-                        Padding="10">
+                        Padding="10"
+                        Spacing="5">
                         <Label>
                             <Label.Style>
                                 <Style TargetType="Label">
                                     <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                                    <Setter Property="FontAttributes" Value="Bold" />
                                     <Style.Triggers>
                                         <DataTrigger
                                             TargetType="Label"

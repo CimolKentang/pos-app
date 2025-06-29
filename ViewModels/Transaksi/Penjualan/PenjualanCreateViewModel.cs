@@ -705,6 +705,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
                 if (response?.Succeeded == true)
                 {
                     ClearData();
+                    await Toast.Make("Penjualan berhasil dibuat", ToastDuration.Long).Show();
                     await Shell.Current.GoToAsync("..");
                 }
             }
@@ -717,15 +718,15 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
         private void ClearData()
         {
-            SelectedProduks.Clear();
-            PenjualanDetails.Clear();
-            Produks.Clear();
-            Jurnals.Clear();
             CurrentPage = 0;
             HasNextPage = false;
             ItemNumber = 0;
             TotalItem = 0;
             HasSelectedProduk = false;
+            SelectedProduks.Clear();
+            PenjualanDetails.Clear();
+            Produks.Clear();
+            Jurnals.Clear();
         }
     }
 }
