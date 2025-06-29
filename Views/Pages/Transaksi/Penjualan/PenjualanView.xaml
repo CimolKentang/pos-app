@@ -12,19 +12,20 @@
         <converter:DateTimeConverter x:Key="DateTimeConverter"></converter:DateTimeConverter>
         <converter:EmptyToDashConverter x:Key="EmptyToDashConverter"></converter:EmptyToDashConverter>
     </ContentPage.Resources>
-
     <ContentPage.ToolbarItems>
         <ToolbarItem Order="Secondary" Text="Logout" Clicked="Logout" />
     </ContentPage.ToolbarItems>
-
     <Grid
         x:DataType="viewModel:PenjualanViewModel"
         RowDefinitions="Auto,*,Auto">
         <VerticalStackLayout
             Grid.Row="0">
-            <StackLayout
-                Padding="5">
+            <Grid
+                Padding="5"
+                ColumnDefinitions="*,Auto"
+                ColumnSpacing="5">
                 <Border
+                    Grid.Column="0"
                     Stroke="{AppThemeBinding Light=Black, Dark=White}"
                     StrokeShape="RoundRectangle 5">
                     <Grid
@@ -38,7 +39,41 @@
                             Grid.Column="0" />
                     </Grid>
                 </Border>
-            </StackLayout>
+                <HorizontalStackLayout
+                    Grid.Column="1">
+                    <Label
+                        FontFamily="MaterialSymbols"
+                        FontSize="25"
+                        VerticalOptions="Center"
+                        Text="&#xE94e;">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ToggleFilterCommand}" />    
+                        </Label.GestureRecognizers>    
+                    </Label>
+                </HorizontalStackLayout>
+            </Grid>
+            <Grid
+                IsVisible="{Binding ShowFilter}"
+                ColumnDefinitions="*,*"
+                ColumnSpacing="5"
+                Padding="5,0,5,5">
+                <Border
+                    Grid.Column="0"
+                    Padding="5,10,5,10"
+                    StrokeShape="RoundRectangle 5"
+                    Stroke="{AppThemeBinding Dark=White,Light=Black}">
+                    <Label
+                        Text="Filter Pelanggan" />
+                </Border>
+                <Border
+                    Grid.Column="1"
+                    Padding="5,10,5,10"
+                    StrokeShape="RoundRectangle 5"
+                    Stroke="{AppThemeBinding Dark=White,Light=Black}">
+                    <Label
+                        Text="Filter Sales" />
+                </Border>
+            </Grid>
             <BoxView
                 HeightRequest="1"
                 BackgroundColor="{AppThemeBinding Dark=White,Light=Black}" />

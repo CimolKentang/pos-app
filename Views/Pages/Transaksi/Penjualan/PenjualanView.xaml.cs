@@ -21,6 +21,7 @@ public partial class PenjualanView : ContentPage
 	protected override void OnAppearing()
 	{
 		base.OnAppearing();
+		_penjualanViewModel.ClearDataCommand.Execute(null);
 		_penjualanViewModel.GetPenjualansCommand.Execute(null);
 	}
 

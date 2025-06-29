@@ -92,22 +92,36 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
         private bool _isHandlingScroll = false;
 
+        private bool _showFilter = false;
+        public bool ShowFilter
+        {
+            get => _showFilter;
+            set => SetProperty(ref _showFilter, value);
+        }
+
+        public ICommand ClearDataCommand { get; }
         public ICommand GetPenjualansCommand { get; }
         public ICommand RefreshPenjualanCommand { get; }
         public ICommand HandleScrollCommand { get; }
+        public ICommand ToggleFilterCommand { get; }
 
         public PenjualanViewModel(IPenjualanService penjualanService, ValueDisplayViewModel valueDisplayViewModel)
         {
             _penjualanService = penjualanService;
             _valueDisplayViewModel = valueDisplayViewModel;
+            ClearDataCommand = new Command(ClearData);
             GetPenjualansCommand = new Command(async () => await GetPenjualans());
             RefreshPenjualanCommand = new Command(async () => await RefreshPenjualan());
             HandleScrollCommand = new Command(async () => await HandleScroll());
+            ToggleFilterCommand = new Command(() =>
+            {
+                ShowFilter = !ShowFilter;
+            });
         }
 
-        public ICommand ShowDialogCommand => new Command(async () =>
+        public ICommand ShowPelangganDialogCommand => new Command(async () =>
         {
-            var answer = await Shell.Current.ShowPopupAsync(new SelectMultipleOneDialog(_valueDisplayViewModel, SelectMultipleForConstant.Gudang));
+            var answer = await Shell.Current.ShowPopupAsync(new SelectMultipleOneDialog(_valueDisplayViewModel, SelectMultipleForConstant.Pelanggan));
             _valueDisplayViewModel.ClearData();
 
             if (answer != null)
@@ -120,7 +134,9 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
                     FilterId = result.Value
                 };
 
-                SearchParams.FilterGudang.Add(filter);
+                SearchParams.FilterPelanggan.Add(filter);
+                ClearData();
+                
                 await GetPenjualans();
             }
         });
