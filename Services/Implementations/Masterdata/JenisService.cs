@@ -9,12 +9,13 @@ using inovasyposmobile.Helpers;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Requests;
 using inovasyposmobile.Models.Responses;
+using inovasyposmobile.Services.Interfaces;
 using inovasyposmobile.Services.Interfaces.Auth;
 using inovasyposmobile.Services.Interfaces.Masterdata;
 
 namespace inovasyposmobile.Services.Implementations.Masterdata
 {
-    public class JenisService : IJenisService
+    public class JenisService : IServiceBase<JenisModel, SearchSortFilterPagingModel>
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;

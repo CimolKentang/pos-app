@@ -83,7 +83,7 @@ public static class MauiProgram
 		builder.Services.AddSingleton<ProdukListViewModel>();
 		builder.Services.AddSingleton<ProdukDetailViewModel>();
 
-		builder.Services.AddSingleton<IJenisService, JenisService>();
+		builder.Services.AddSingleton<JenisService>();
 		builder.Services.AddSingleton<JenisListViewModel>();
 		builder.Services.AddSingleton<JenisDetailViewModel>();
 		builder.Services.AddSingleton<JenisAddViewModel>();

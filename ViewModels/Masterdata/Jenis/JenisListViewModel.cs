@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
@@ -10,13 +6,13 @@ using inovasyposmobile.Constants;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Requests;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Jenis
 {
     public class JenisListViewModel : BaseViewModel
     {
-        private readonly IJenisService _jenisService;
+        private readonly JenisService _jenisService;
         private ObservableCollection<JenisModel> _jenis = new ObservableCollection<JenisModel>();
         private SearchSortFilterPagingModel SearchParams = new SearchSortFilterPagingModel();
 
@@ -109,7 +105,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Jenis
         public ICommand HandleScrollCommand { get; }
         public ICommand RefreshDataCommand { get; }
 
-        public JenisListViewModel(IJenisService jenisService)
+        public JenisListViewModel(JenisService jenisService)
         {
             _jenisService = jenisService;
 

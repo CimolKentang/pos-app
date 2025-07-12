@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Jenis
 {
     public class JenisDetailViewModel : BaseViewModel
     {
-        private readonly IJenisService _jenisService;
+        private readonly JenisService _jenisService;
 
         private JenisModel? _jenis;
         public JenisModel? Jenis
@@ -33,7 +29,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Jenis
         public ICommand ClearDataCommand { get; }
         public ICommand DeleteDataCommand { get; }
 
-        public JenisDetailViewModel(IJenisService jenisService)
+        public JenisDetailViewModel(JenisService jenisService)
         {
             _jenisService = jenisService;
 

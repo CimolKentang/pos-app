@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Jenis"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
              x:Class="inovasyposmobile.Views.Pages.Masterdata.Jenis.Components.JenisCreateView"
              Title="Tambah Jenis">
     <Grid
@@ -13,104 +14,40 @@
                 IsVisible="{Binding IsNotLoading}"
                 Padding="10,20"
                 Spacing="20">
-                <VerticalStackLayout>
-                    <Entry
-                        Placeholder="Nama jenis"
-                        Text="{Binding Nama}" />
-                    <BoxView
-                        HeightRequest="1"
-                        BackgroundColor="Black" />
-                </VerticalStackLayout>
-                <VerticalStackLayout>
-                    <Editor
-                        HeightRequest="100"
-                        Placeholder="Deskripsi"
-                        Text="{Binding Deskripsi}" />
-                    <BoxView
-                        HeightRequest="1"
-                        BackgroundColor="Black" />
-                </VerticalStackLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan expired produk stok" />
-                    <Switch
-                        IsToggled="{Binding IsShowExpiredDate}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan varian produk stok" />
-                    <Switch
-                        IsToggled="{Binding IsShowVarian}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan ukuran" />
-                    <Switch
-                        IsToggled="{Binding IsShowUkuran}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan warna" />
-                    <Switch
-                        IsToggled="{Binding IsShowWarna}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan tinggi" />
-                    <Switch
-                        IsToggled="{Binding IsShowTinggi}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan panjang" />
-                    <Switch
-                        IsToggled="{Binding IsShowPanjang}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan lebar" />
-                    <Switch
-                        IsToggled="{Binding IsShowLebar}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan kena pajak" />
-                    <Switch
-                        IsToggled="{Binding IsShowKenaPajak}" />
-                </FlexLayout>
-                <FlexLayout
-                    AlignItems="Center"
-                    JustifyContent="SpaceBetween">
-                    <Label
-                        FontAttributes="Bold"
-                        Text="Tampilkan jual online" />
-                    <Switch
-                        IsToggled="{Binding IsShowJualOnline}" />
-                </FlexLayout>
+                <control:EntryColumnControl
+                    Placeholder="Nama jenis"
+                    IsRequired="True"
+                    Text="{Binding Nama,Mode=TwoWay}" />  
+                <control:EditorColumnControl
+                    Placeholder="Deskripsi"
+                    Text="{Binding Deskripsi,Mode=TwoWay}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan expired produk stok"
+                    IsToggled="{Binding IsShowExpiredDate}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan varian produk stok"
+                    IsToggled="{Binding IsShowVarian}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan ukuran"
+                    IsToggled="{Binding IsShowUkuran}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan warna"
+                    IsToggled="{Binding IsShowWarna}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan tinggi"
+                    IsToggled="{Binding IsShowTinggi}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan panjang"
+                    IsToggled="{Binding IsShowPanjang}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan lebar"
+                    IsToggled="{Binding IsShowLebar}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan kena pajak"
+                    IsToggled="{Binding IsShowKenaPajak}" />
+                <control:SwitchColumnControl
+                    Title="Tampilkan jual online"
+                    IsToggled="{Binding IsShowJualOnline}" />
             </VerticalStackLayout>
         </ScrollView>
         <VerticalStackLayout
@@ -119,6 +56,7 @@
             <Border
                 Padding="13"
                 BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
                 StrokeShape="RoundRectangle 5">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding AddDataCommand}" />

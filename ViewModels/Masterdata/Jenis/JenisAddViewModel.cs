@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Jenis
 {
     public class JenisAddViewModel : BaseViewModel
     {
-        private readonly IJenisService _jenisService;
+        private readonly JenisService _jenisService;
 
         private JenisModel? _jenis;
         public JenisModel? Jenis
@@ -117,7 +113,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Jenis
         public ICommand InitDataCommand { get; }
         public ICommand AddDataCommand { get; }
 
-        public JenisAddViewModel(IJenisService jenisService)
+        public JenisAddViewModel(JenisService jenisService)
         {
             _jenisService = jenisService;
 
@@ -179,6 +175,10 @@ namespace inovasyposmobile.ViewModels.Masterdata.Jenis
                 {
                     await Shell.Current.GoToAsync("..");
                     await Toast.Make("Jenis berhasil ditambah", ToastDuration.Short).Show();
+                }
+                else if (response != null && response.Succeeded == false)
+                {
+                    throw new ApiException(response.Messages![0]);
                 }
             }
             catch (InternetException ex)
