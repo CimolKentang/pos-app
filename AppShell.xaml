@@ -4,37 +4,17 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:inovasyposmobile"
-    xmlns:penjualanView="clr-namespace:inovasyposmobile.Views.Pages.Transaksi.Penjualan"
     xmlns:authView="clr-namespace:inovasyposmobile.Views.Pages.Auth"
-    xmlns:penjualanComponentView="clr-namespace:inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components"
+    xmlns:homeView="clr-namespace:inovasyposmobile.Views.Pages.Home"
     Title="inovasyposmobile">
-
     <ShellContent
         Route="LoginRoute"
         Title="Login"
         Shell.NavBarIsVisible="False"
         ContentTemplate="{DataTemplate authView:LoginView}" />
-
-    <TabBar
-        Route="MainRoute">
-        <Tab
-            Title="Home"
-            Icon="home.png">
-            <ShellContent 
-                Shell.BackgroundColor="{StaticResource Primary}"
-                Shell.TitleColor="White"
-                Shell.ForegroundColor="White"
-                ContentTemplate="{DataTemplate penjualanView:PenjualanView}" />    
-        </Tab>
-        <Tab
-            Title="Menu"
-            Icon="app.png">
-            <ShellContent 
-                Shell.BackgroundColor="{StaticResource Primary}"
-                Shell.TitleColor="White"
-                Shell.ForegroundColor="White"
-                ContentTemplate="{DataTemplate penjualanComponentView:PenjualanCreateView}" />    
-        </Tab>
-    </TabBar>
-
+    <ShellContent
+        Route="MainRoute"
+        Title="Inovasy POS"
+        Shell.NavBarIsVisible="True"
+        ContentTemplate="{DataTemplate homeView:HomeView}" />
 </Shell>

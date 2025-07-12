@@ -11,7 +11,11 @@ using inovasyposmobile.Services.Interfaces.Masterdata;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 using inovasyposmobile.ViewModels;
 using inovasyposmobile.ViewModels.Auth;
+using inovasyposmobile.ViewModels.Masterdata.Satuan;
+using inovasyposmobile.ViewModels.Masterdata.Jenis;
+using inovasyposmobile.ViewModels.Masterdata.Merek;
 using inovasyposmobile.ViewModels.Masterdata.Produk;
+using inovasyposmobile.ViewModels.Masterdata.Supplier;
 using inovasyposmobile.ViewModels.Transaksi;
 using inovasyposmobile.ViewModels.Transaksi.Penjualan;
 using inovasyposmobile.Views.Pages.Transaksi.Penjualan;
@@ -19,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Handlers;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
+using inovasyposmobile.ViewModels.Masterdata.Pelanggan;
 
 namespace inovasyposmobile;
 
@@ -46,6 +51,7 @@ public static class MauiProgram
 			{
 				handlers.AddHandler<Entry, CustomEntryHandler>();
 				handlers.AddHandler<Editor, CustomEditorHandler>();
+				handlers.AddHandler<Switch, CustomSwitchHandler>();
 			});
 
 		// http client with base address
@@ -69,11 +75,30 @@ public static class MauiProgram
 		builder.Services.AddSingleton<IAuthService, AuthService>();
 		builder.Services.AddSingleton<LoginViewModel>();
 		builder.Services.AddSingleton<IPenjualanService, PenjualanService>();
-		builder.Services.AddSingleton<PenjualanViewModel>();		
+		builder.Services.AddSingleton<PenjualanListViewModel>();		
 		builder.Services.AddSingleton<PenjualanDetailViewModel>();
+		builder.Services.AddSingleton<PenjualanCreateViewModel>();
 
 		builder.Services.AddSingleton<IProdukService, ProdukService>();
-		builder.Services.AddSingleton<PenjualanCreateViewModel>();
+		builder.Services.AddSingleton<ProdukListViewModel>();
+		builder.Services.AddSingleton<ProdukDetailViewModel>();
+
+		builder.Services.AddSingleton<IJenisService, JenisService>();
+		builder.Services.AddSingleton<JenisListViewModel>();
+		builder.Services.AddSingleton<JenisDetailViewModel>();
+		builder.Services.AddSingleton<JenisAddViewModel>();
+
+		builder.Services.AddSingleton<MerekService>();
+		builder.Services.AddSingleton<MerekListViewModel>();
+
+		builder.Services.AddSingleton<SatuanService>();
+		builder.Services.AddSingleton<SatuanListViewModel>();
+
+		builder.Services.AddSingleton<SupplierService>();
+		builder.Services.AddSingleton<SupplierListViewModel>();
+
+		builder.Services.AddSingleton<PelangganService>();
+		builder.Services.AddSingleton<PelangganListViewModel>();
 
 		builder.Services.AddSingleton<IValueDisplayService, ValueDisplayService>();
 		builder.Services.AddSingleton<ValueDisplayViewModel>();
