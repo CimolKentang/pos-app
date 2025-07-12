@@ -16,9 +16,9 @@ namespace inovasyposmobile.Handlers
             platformView.Background = null;
 
             // cursor color
-            var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
+            // var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
             // platformView.SetHighlightColor(Android.Graphics.Color.Gray);
-            platformView?.TextCursorDrawable?.SetTint(isDark ? Android.Graphics.Color.White : Android.Graphics.Color.Black);
+            // platformView?.TextCursorDrawable?.SetTint(isDark ? Android.Graphics.Color.White : Android.Graphics.Color.Black);
         }
 #endif
 
@@ -30,8 +30,8 @@ namespace inovasyposmobile.Handlers
             platformView.BorderStyle = UIKit.UITextBorderStyle.None;
 
             // cursor color
-            var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
-            platformView.TintColor = isDark ? UIKit.UIColor.White : UIKit.UIColor.Black;
+            // var isDark = Application.Current?.RequestedTheme == AppTheme.Dark;
+            // platformView.TintColor = isDark ? UIKit.UIColor.White : UIKit.UIColor.Black;
         }
 #endif
     }
