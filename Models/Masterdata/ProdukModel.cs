@@ -42,40 +42,40 @@ namespace inovasyposmobile.Models.Masterdata
 
         public string? GambarSmall { get; set; }
 
-        public bool IsGambarChanged { get; set; }
+        public bool? IsGambarChanged { get; set; }
 
         public string? Ukuran { get; set; }
 
         public string? Warna { get; set; }
 
-        public int Berat { get; set; } //gram        
+        public int? Berat { get; set; } //gram        
 
-        public int Tinggi { get; set; } //cm
+        public int? Tinggi { get; set; } //cm
 
-        public int Panjang { get; set; } //cm
+        public int? Panjang { get; set; } //cm
 
-        public int Lebar { get; set; } //cm
+        public int? Lebar { get; set; } //cm
 
-        public bool IsTaxable { get; set; }
+        public bool? IsTaxable { get; set; }
 
-        public bool IsAllowOnline { get; set; }
+        public bool? IsAllowOnline { get; set; }
         /// <summary>
         /// Stok Minimum
         /// </summary>
         /// <value></value>
-        public int MinStok { get; set; }
+        public int? MinStok { get; set; }
 
         /// <summary>
         /// Lama Penggunaan Produk in Day
         /// </summary>
         /// <value></value>
-        public int LamaPenggunaan { get; set; }
+        public int? LamaPenggunaan { get; set; }
         public string? Sku { get; set; }
         public string? Barcode { get; set; }
-        public bool UseMinStokAlert { get; set; }
+        public bool? UseMinStokAlert { get; set; }
         public string? Lokasi { get; set; }
 
-        public int TotalStok
+        public int? TotalStok
         {
             get
             {

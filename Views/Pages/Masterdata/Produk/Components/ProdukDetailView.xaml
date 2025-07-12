@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Produk"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
+             x:Class="inovasyposmobile.Views.Pages.Masterdata.Produk.Components.ProdukDetailView"
+             x:DataType="viewModel:ProdukDetailViewModel"
+             Title="Produk Detail">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem 
+            Order="Primary" 
+            IconImageSource="{FontImageSource FontFamily='MaterialSymbols',Glyph='&#xE150;',Color={StaticResource Primary}}" 
+            Clicked="DeleteItem" />
+        <ToolbarItem 
+            Order="Primary" 
+            IconImageSource="{FontImageSource FontFamily='MaterialSymbols',Glyph='&#xE872;',Color={StaticResource Primary}}" />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <Grid
+            RowDefinitions="*"
+            VerticalOptions="Fill">
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Grid.Row="0"
+                Padding="20"
+                Spacing="20">
+                <Image
+                    HeightRequest="70"
+                    WidthRequest="70"
+                    HorizontalOptions="Start">
+                    <Image.Style>
+                        <Style TargetType="Image">
+                            <Setter Property="Source" Value="no_image.png" />
+                            <Style.Triggers>
+                                <DataTrigger
+                                    TargetType="Image"
+                                    Binding="{Binding HasImage}"
+                                    Value="True">
+                                    <Setter Property="Source" Value="{Binding Produk.Gambar}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <Label
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    Text="{Binding Produk.Nama}" />
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Kode"
+                        Text="{Binding Produk.Kode}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Satuan"
+                        Text="{Binding Produk.Satuan.Nama}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Jenis"
+                        Text="{Binding Produk.Jenis.Nama}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Merek"
+                        Text="{Binding Produk.Merek.Nama}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Supplier"
+                        Text="{Binding Produk.Supplier.Nama}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Total Stok"
+                        Text="{Binding Produk.TotalStok}" />
+                </Grid>
+                <control:DetailComponentControl
+                    Grid.Column="0"
+                    Title="Deskripsi"
+                    Text="{Binding Produk.Deskripsi}" />
+                <Border
+                    Stroke="{StaticResource Primary}"
+                    StrokeShape="RoundRectangle 5"
+                    Padding="15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer />
+                    </Border.GestureRecognizers>
+                    <FlexLayout
+                        AlignItems="Center"
+                        JustifyContent="SpaceBetween">
+                        <Label
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            Text="Detail Sisa Stok" />
+                        <Label
+                            FontSize="20"
+                            FontFamily="MaterialSymbols"
+                            TextColor="{StaticResource Primary}"
+                            Text="&#xE409;" />
+                    </FlexLayout>
+                </Border>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Berat (Gram)"
+                        Text="{Binding Produk.Berat}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Lokasi"
+                        Text="{Binding Produk.Lokasi}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Lama penggunaan (hari)"
+                        Text="{Binding Produk.LamaPenggunaan}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Warna"
+                        Text="{Binding Produk.Warna}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Lebar (cm)"
+                        Text="{Binding Produk.Lebar}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Barcode"
+                        Text="{Binding Produk.Barcode}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="SKU"
+                        Text="{Binding Produk.Sku}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Minimum Stok"
+                        Text="{Binding Produk.MinStok}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*">
+                    <control:DetailComponentControl
+                        Grid.Column="0"
+                        Title="Ukuran"
+                        Text="{Binding Produk.Ukuran}" />
+                    <control:DetailComponentControl
+                        Grid.Column="1"
+                        Title="Panjang (cm)"
+                        Text="{Binding Produk.Panjang}" />
+                </Grid>
+                <control:DetailComponentControl
+                    Grid.Column="1"
+                    Title="Tinggi (cm)"
+                    Text="{Binding Produk.Tinggi}" />
+            </VerticalStackLayout>
+            <ActivityIndicator
+                IsVisible="{Binding IsLoading}"
+                Grid.Row="0"
+                IsRunning="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="50" HeightRequest="50"
+                Color="{StaticResource Primary}" />
+        </Grid>
+    </ScrollView>
+</ContentPage>

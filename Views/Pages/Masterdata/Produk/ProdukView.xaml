@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Produk"
+             x:Class="inovasyposmobile.Views.Pages.Masterdata.Produk.ProdukView"
+             Title="Produk">
+    <AbsoluteLayout
+        x:DataType="viewModel:ProdukListViewModel">
+        <Grid
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="SizeProportional"
+            RowDefinitions="Auto,*">
+            <VerticalStackLayout>
+                <VerticalStackLayout
+                    Padding="15,10">
+                    <Border
+                        StrokeShape="RoundRectangle 5"
+                        Padding="5,0">
+                        <Grid
+                            ColumnDefinitions="Auto,*,Auto">
+                            <Label
+                                Grid.Column="0"
+                                VerticalOptions="Center"
+                                FontFamily="MaterialSymbols"
+                                FontSize="23"
+                                TextColor="{StaticResource Primary}"
+                                Text="&#xE8b6;" />
+                            <Entry
+                                Grid.Column="1"
+                                Placeholder="Cari produk"
+                                Text="{Binding SearchText}" />
+                            <Label
+                                IsVisible="{Binding SearchTextNotEmpty}"
+                                Grid.Column="2"
+                                VerticalOptions="Center"
+                                FontFamily="MaterialSymbols"
+                                FontSize="23"
+                                TextColor="{StaticResource Primary}"
+                                Text="&#xE14c;">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ClearSearchTextCommand}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </Grid>
+                    </Border>
+                </VerticalStackLayout>
+                <BoxView
+                    HeightRequest="1" />
+            </VerticalStackLayout>
+            <RefreshView
+                Grid.Row="1"
+                IsRefreshing="{Binding IsRefreshing}"
+                Command="{Binding RefreshDataCommand}">
+                <CollectionView
+                    x:Name="JenisCollection"
+                    RemainingItemsThreshold="0"
+                    RemainingItemsThresholdReachedCommand="{Binding HandleScrollCommand}"
+                    ItemsSource="{Binding Produks}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate
+                            x:DataType="viewModel:ProdukItemViewModel">
+                            <VerticalStackLayout>
+                                <VerticalStackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="GoToDetail" />
+                                </VerticalStackLayout.GestureRecognizers>
+                                <Grid
+                                    ColumnDefinitions="Auto,*,Auto"
+                                    ColumnSpacing="10"
+                                    Padding="10,15">
+                                    <Border 
+                                        Grid.Column="0"
+                                        HeightRequest="45" 
+                                        WidthRequest="45"
+                                        VerticalOptions="Center"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 5">
+                                        <Image
+                                            HeightRequest="45"
+                                            WidthRequest="45">
+                                            <Image.Style>
+                                                <Style TargetType="Image">
+                                                    <Setter Property="Source" Value="no_image.png" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger
+                                                            TargetType="Image"
+                                                            Binding="{Binding HasImage}"
+                                                            Value="True">
+                                                            <Setter Property="Source" Value="{Binding Produk.Gambar}" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                    </Border>
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontAttributes="Bold"
+                                            MaxLines="1"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding Produk.Nama}" />
+                                        <Label
+                                            Text="{Binding Produk.Kode}" />
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout
+                                        Grid.Column="2">
+                                        <HorizontalStackLayout
+                                            HorizontalOptions="End">
+                                            <Border
+                                                MinimumWidthRequest="15"
+                                                StrokeThickness="0"
+                                                BackgroundColor="{StaticResource Primary}"
+                                                StrokeShape="RoundRectangle 3"
+                                                Padding="2,0">
+                                                <Label
+                                                    TextColor="White"
+                                                    HorizontalTextAlignment="Center"
+                                                    Text="{Binding Produk.TotalStok}" />
+                                            </Border>
+                                        </HorizontalStackLayout>
+                                        <Label>
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span
+                                                        TextColor="Black"
+                                                        Text="Rp. " />
+                                                    <Span
+                                                        TextColor="Black"
+                                                        Text="{Binding Produk.HargaJual}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                    </VerticalStackLayout>
+                                </Grid>
+                                <BoxView
+                                    Grid.Row="1"
+                                    HeightRequest="1" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
+        </Grid>
+        <Border
+            IsVisible="{Binding IsLoading}"
+            StrokeThickness="0"
+            AbsoluteLayout.LayoutBounds="0,0,1,1"
+            AbsoluteLayout.LayoutFlags="SizeProportional">
+            <ActivityIndicator
+                IsRunning="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="50" HeightRequest="50"
+                Color="{StaticResource Primary}" />
+        </Border>
+        <Border
+            AbsoluteLayout.LayoutBounds="0.5,0.95,55,55"
+            AbsoluteLayout.LayoutFlags="PositionProportional"
+            StrokeShape="RoundRectangle 30"
+            StrokeThickness="0"
+            BackgroundColor="{StaticResource Primary}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer Tapped="GoToCreate" />
+            </Border.GestureRecognizers>
+            <Border.Shadow>
+                <Shadow
+                    Offset="0,5"
+                    Opacity="0.5" />
+            </Border.Shadow>
+            <Label
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                FontSize="25"
+                FontFamily="MaterialSymbols"
+                TextColor="White"
+                Text="&#xf3dd;" />
+        </Border>
+    </AbsoluteLayout>
+</ContentPage>

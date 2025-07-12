@@ -33,19 +33,16 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
-            {
-                var token = await _authService.GetTokenAsync();
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ProdukModel>>>();
-            }
-            catch (HttpRequestException ex)
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApiException("Failed To Load Produk", ex);
+                throw new ApiException("Gagal memuat produk");
             }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ProdukModel>>>();
         }
 
         public async Task<BaseResponse<ProdukModel>?> GetByIdAsync(string id)
@@ -55,16 +52,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.GetAsync($"{apiUrl}getbyid/{id}");
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.GetAsync($"{apiUrl}getbyid/{id}");
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
+                throw new ApiException("Gagal memuat produk");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Load Produk", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
         }
 
         public async Task<BaseResponse<ProdukModel>?> CreateAsync(ProdukModel pelanggan)
@@ -74,16 +68,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}", pelanggan);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}", pelanggan);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
+                throw new ApiException("Gagal menambah produk");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Create Produk", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
         }
 
         public async Task<BaseResponse<ProdukModel>?> UpdateAsync(string id, ProdukModel pelanggan)
@@ -93,16 +84,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.PutAsJsonAsync(apiUrl + id, pelanggan);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.PutAsJsonAsync(apiUrl + id, pelanggan);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
+                throw new ApiException("Gagal mengupdate produk");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Update Produk", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<ProdukModel>>();
         }
 
         public async Task<BaseResponse<string>?> DeleteAsync(string id)
@@ -112,16 +100,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.DeleteAsync(apiUrl + id);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.DeleteAsync(apiUrl + id);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<string>>();
+                throw new ApiException("Gagal menghapus produk");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Delete Produk", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<string>>();
         }
 
         public async Task<BaseResponse<SearchResponse<ProdukWithStokModel>>?> GetProdukWithStoks(ProdukSearchParams searchParams)
@@ -131,20 +116,16 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
-            {
-                var token = await _authService.GetTokenAsync();
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search-produk-stok", searchParams);
-                response.EnsureSuccessStatusCode();
-                
-                return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ProdukWithStokModel>>>();
-            }
-            catch (HttpRequestException ex)
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search-produk-stok", searchParams);
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApiException("Failed To Load Produk", ex);
+                throw new ApiException("Gagal memuat produk");
             }
+                
+            return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ProdukWithStokModel>>>();
         }
     }
 }
