@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:homeVM="clr-namespace:inovasyposmobile.ViewModels.Home"
+             x:Class="inovasyposmobile.Views.Pages.Home.HomeView"
+             Title="Inovasy POS">
+    <VerticalStackLayout
+        x:DataType="homeVM:HomeViewModel">
+        <CollectionView
+            x:Name="PageList"
+            ItemsSource="{Binding Pages}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate
+                    x:DataType="homeVM:PageListModel">
+                    <VerticalStackLayout
+                        Padding="20,0,20,0">
+                        <VerticalStackLayout.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="GoToPage" />
+                        </VerticalStackLayout.GestureRecognizers>
+                        <HorizontalStackLayout
+                            Padding="0,15,0,15">
+                            <Label
+                                FontFamily="MaterialSymbols"
+                                FontSize="20"
+                                VerticalOptions="Center"
+                                Margin="0,0,10,0"
+                                Text="{Binding Icon}" />
+                            <Label
+                                FontSize="16"
+                                VerticalOptions="Center"
+                                Text="{Binding Title}" />
+                        </HorizontalStackLayout>
+                        <BoxView
+                            HeightRequest="1" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </VerticalStackLayout>
+</ContentPage>
