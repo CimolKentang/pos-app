@@ -9,12 +9,13 @@ using inovasyposmobile.Models.Filters;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Responses;
 using inovasyposmobile.Services.Implementations.Transaksi;
+using inovasyposmobile.Services.Interfaces;
 using inovasyposmobile.Services.Interfaces.Auth;
 using inovasyposmobile.Services.Interfaces.Masterdata;
 
 namespace inovasyposmobile.Services.Implementations.Masterdata
 {
-    public class PelangganService : IPelangganService
+    public class PelangganService : IServiceBase<PelangganModel, PelangganSearchParams>
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;
@@ -34,19 +35,16 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
-            {
-                var token = await _authService.GetTokenAsync();
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<PelangganModel>>>();
-            }
-            catch (HttpRequestException ex)
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
+             if (!response.IsSuccessStatusCode)
             {
-                throw new ApiException("Failed To Load Pelanggan", ex);
+                throw new ApiException("Gagal memuat pelanggan");
             }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<PelangganModel>>>();
         }
 
         public async Task<BaseResponse<SearchResponse<ValueDisplayFilterModel>>?> GetAllValueDisplayAsync(PelangganSearchParams searchParams)
@@ -56,19 +54,16 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
-            {
-                var token = await _authService.GetTokenAsync();
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ValueDisplayFilterModel>>>();
-            }
-            catch (HttpRequestException ex)
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}search", searchParams);
+            if (!response.IsSuccessStatusCode)
             {
-                throw new ApiException("Failed To Load Pelanggan", ex);
+                throw new ApiException("Gagal memuat pelanggan");
             }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<ValueDisplayFilterModel>>>();
         }
 
         public async Task<BaseResponse<PelangganModel>?> GetByIdAsync(string id)
@@ -78,16 +73,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.GetAsync($"{apiUrl}getbyid/{id}");
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.GetAsync($"{apiUrl}getbyid/{id}");
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
+                throw new ApiException("Gagal memuat pelanggan");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Load Pelanggan", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
         }
 
         public async Task<BaseResponse<PelangganModel>?> CreateAsync(PelangganModel pelanggan)
@@ -97,16 +89,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.PostAsJsonAsync($"{apiUrl}", pelanggan);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.PostAsJsonAsync($"{apiUrl}", pelanggan);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
+                throw new ApiException("Gagal menambah pelanggan");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Create Pelanggan", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
         }
 
         public async Task<BaseResponse<PelangganModel>?> UpdateAsync(string id, PelangganModel pelanggan)
@@ -116,16 +105,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.PutAsJsonAsync(apiUrl + id, pelanggan);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.PutAsJsonAsync(apiUrl + id, pelanggan);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
+                throw new ApiException("Gagal mengupdate pelanggan");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Update Pelanggan", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<PelangganModel>>();
         }
 
         public async Task<BaseResponse<string>?> DeleteAsync(string id)
@@ -135,16 +121,13 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            try
+            var response = await _httpClient.DeleteAsync(apiUrl + id);
+            if (!response.IsSuccessStatusCode)
             {
-                var response = await _httpClient.DeleteAsync(apiUrl + id);
-                response.EnsureSuccessStatusCode();
-                return await response.Content.ReadFromJsonAsync<BaseResponse<string>>();
+                throw new ApiException("Gagal menghapus pelanggan");
             }
-            catch (HttpRequestException ex)
-            {
-                throw new ApiException("Failed To Delete Pelanggan", ex);
-            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<string>>();
         }
     }
 }
