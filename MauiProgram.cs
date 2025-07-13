@@ -74,6 +74,7 @@ public static class MauiProgram
 		// register services
 		builder.Services.AddSingleton<IAuthService, AuthService>();
 		builder.Services.AddSingleton<LoginViewModel>();
+		
 		builder.Services.AddSingleton<IPenjualanService, PenjualanService>();
 		builder.Services.AddSingleton<PenjualanListViewModel>();		
 		builder.Services.AddSingleton<PenjualanDetailViewModel>();
@@ -90,12 +91,15 @@ public static class MauiProgram
 
 		builder.Services.AddSingleton<MerekService>();
 		builder.Services.AddSingleton<MerekListViewModel>();
+		builder.Services.AddSingleton<MerekCreateViewModel>();
 
 		builder.Services.AddSingleton<SatuanService>();
 		builder.Services.AddSingleton<SatuanListViewModel>();
+		builder.Services.AddSingleton<SatuanCreateViewModel>();
 
 		builder.Services.AddSingleton<SupplierService>();
 		builder.Services.AddSingleton<SupplierListViewModel>();
+		builder.Services.AddSingleton<SupplierCreateViewModel>();
 
 		builder.Services.AddSingleton<PelangganService>();
 		builder.Services.AddSingleton<PelangganListViewModel>();

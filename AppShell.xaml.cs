@@ -9,6 +9,7 @@ using inovasyposmobile.Views.Pages.Masterdata.Produk.Components;
 using inovasyposmobile.Views.Pages.Masterdata.Satuan;
 using inovasyposmobile.Views.Pages.Masterdata.Satuan.Components;
 using inovasyposmobile.Views.Pages.Masterdata.Supplier;
+using inovasyposmobile.Views.Pages.Masterdata.Supplier.Components;
 using inovasyposmobile.Views.Pages.Transaksi.Penjualan;
 using inovasyposmobile.Views.Pages.Transaksi.Penjualan.Components;
 
@@ -41,6 +42,7 @@ public partial class AppShell : Shell
 		Routing.RegisterRoute("SatuanCreate", typeof(SatuanCreateView));
 
 		Routing.RegisterRoute("Supplier", typeof(SupplierView));
+		Routing.RegisterRoute("SupplierCreate", typeof(SupplierCreateView));
 
 		Routing.RegisterRoute("Pelanggan", typeof(PelangganView));
 	}
