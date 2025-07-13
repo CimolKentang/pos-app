@@ -50,7 +50,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
 
             return await response.Content.ReadFromJsonAsync<BaseResponse<SearchResponse<SupplierModel>>>();
         }
-        
+
         public async Task<BaseResponse<SupplierModel>?> GetByIdAsync(string id)
         {
             if (_connectivity.NetworkAccess != NetworkAccess.Internet)
@@ -59,7 +59,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
             }
 
             var response = await _httpClient.GetAsync($"{apiUrl}getbyid/{id}");
-            
+
             if (!response.IsSuccessStatusCode)
             {
                 throw new ApiException("Gagal memuat supplier");
@@ -67,13 +67,16 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
 
             return await response.Content.ReadFromJsonAsync<BaseResponse<SupplierModel>>();
         }
-        
+
         public async Task<BaseResponse<SupplierModel>?> CreateAsync(SupplierModel supplier)
         {
             if (_connectivity.NetworkAccess != NetworkAccess.Internet)
             {
                 throw new InternetException("No Internet Connection");
             }
+
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
             var response = await _httpClient.PostAsJsonAsync($"{apiUrl}", supplier);
             if (!response.IsSuccessStatusCode)
@@ -96,7 +99,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
             {
                 throw new ApiException("Gagal mengupdate supplier");
             }
-            
+
             return await response.Content.ReadFromJsonAsync<BaseResponse<SupplierModel>>();
         }
 
@@ -112,8 +115,25 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
             {
                 throw new ApiException("Gagal menghapus supplier");
             }
-            
+
             return await response.Content.ReadFromJsonAsync<BaseResponse<string>>();
+        }
+        
+        public async Task<BaseResponse<SupplierModel>?> InitSupplier()
+        {
+            if (_connectivity.NetworkAccess != NetworkAccess.Internet)
+            {
+                throw new InternetException("No Internet Connection");
+            }
+
+            var response = await _httpClient.GetAsync($"{apiUrl}initsupplier");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ApiException("Gagal memuat supplier");
+            }
+
+            return await response.Content.ReadFromJsonAsync<BaseResponse<SupplierModel>>();
         }
     }
 }
