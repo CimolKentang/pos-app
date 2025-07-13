@@ -10,6 +10,7 @@ using inovasyposmobile.Helpers;
 using inovasyposmobile.Models.Akuntansi;
 using inovasyposmobile.Models.Filters;
 using inovasyposmobile.Models.Masterdata;
+using inovasyposmobile.Models.Requests;
 using inovasyposmobile.Models.Responses;
 using inovasyposmobile.Services.Implementations.Transaksi;
 using inovasyposmobile.Services.Interfaces;
@@ -87,6 +88,18 @@ namespace inovasyposmobile.Services.Implementations
                         ((AkunSearchParams)searchParamsObject).PageIndex = pageIndex;
                         apiUrl = "akuntansi/akun/search";
                         response = await _httpPosClient.PostAsJsonAsync(apiUrl, searchParamsObject);
+                        break;
+
+                    case SelectMultipleForConstant.Wilayah:
+                        searchParamsObject = new SearchSortFilterPagingModel();
+                        ((SearchSortFilterPagingModel)searchParamsObject).IsValueDisPlay = true;
+                        ((SearchSortFilterPagingModel)searchParamsObject).Search = search;
+                        ((SearchSortFilterPagingModel)searchParamsObject).SortBy = "nama";
+                        ((SearchSortFilterPagingModel)searchParamsObject).SortDir = SortDirectionConstant.Asc;
+                        ((SearchSortFilterPagingModel)searchParamsObject).PageIndex = pageIndex;
+                        apiUrl = "masterdata/wilayah/search";
+                        urlWithQuery = apiUrl + QueryStringHelper.ToQueryString((SearchSortFilterPagingModel)searchParamsObject);
+                        response = await _httpPosClient.GetAsync(urlWithQuery);
                         break;
                         
                     default:

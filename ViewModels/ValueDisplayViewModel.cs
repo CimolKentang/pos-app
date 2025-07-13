@@ -17,6 +17,9 @@ namespace inovasyposmobile.ViewModels
     public class ValueDisplayViewModel : BaseViewModel
     {
         private readonly IValueDisplayService _valueDisplayService;
+        private CancellationTokenSource? _debounceCts;
+
+        public string SelectMultipleFor { get; set; } = SelectMultipleForConstant.Pelanggan;
 
         private ObservableCollection<ValueDisplayFilterModel> _datas = new ObservableCollection<ValueDisplayFilterModel>();
         public ObservableCollection<ValueDisplayFilterModel> Datas
@@ -34,8 +37,26 @@ namespace inovasyposmobile.ViewModels
                 if (_searchText != value)
                 {
                     SetProperty(ref _searchText, value);
+
+                    if (!string.IsNullOrEmpty(value))
+                    {
+                        SearchTextNotEmpty = true;
+                    }
+                    else
+                    {
+                        SearchTextNotEmpty = false;
+                    }
+
+                    Task.Run(OnSearchTextChanged);
                 }
             }
+        }
+
+        private bool _searchTextNotEmpty = false;
+        public bool SearchTextNotEmpty
+        {
+            get => _searchTextNotEmpty;
+            set => SetProperty(ref _searchTextNotEmpty, value);
         }
 
         private int _totalItem = 0;
@@ -86,28 +107,26 @@ namespace inovasyposmobile.ViewModels
 
         public ICommand GetDatasCommand { get; }
         public ICommand ScrollDataCommand { get; }
+        public ICommand ClearSearchTextCommand { get; }
 
         public ValueDisplayViewModel(IValueDisplayService valueDisplayService)
         {
             _valueDisplayService = valueDisplayService;
-            GetDatasCommand = new Command<string>(async (selectMultipleForConstant) => await GetDatasAsync(selectMultipleForConstant));
+            GetDatasCommand = new Command(async () => await GetDatasAsync());
             ScrollDataCommand = new Command<string>(async (selectMultipleForConstant) => await ScrollData(selectMultipleForConstant));
+            ClearSearchTextCommand = new Command(() => SearchText = "");
         }
 
-        private async Task GetDatasAsync(string selectMultipleFor)
+        private async Task GetDatasAsync()
         {
             IsLoading = true;
 
             try
             {
-                var response = await _valueDisplayService.GetAllAsync(selectMultipleFor, SearchText, CurrentPage);
+                var response = await _valueDisplayService.GetAllAsync(SelectMultipleFor, SearchText, CurrentPage);
 
                 if (response?.Data?.Items != null)
                 {
-                    Console.WriteLine("POPUP");
-                    Console.WriteLine(response.Data.TotalItem);
-                    Console.WriteLine(response.Data);
-
                     TotalItem = response.Data.TotalItem;
                     HasNextPage = response.Data.HasNextPage;
 
@@ -126,16 +145,29 @@ namespace inovasyposmobile.ViewModels
             catch (InternetException ex)
             {
                 await Toast.Make(ex.Message, ToastDuration.Short).Show();
-                // await DialogService.ShowAlertAsync("Connection Error", ex.Message, "OK");
             }
             catch (ApiException ex)
             {
                 await Toast.Make(ex.Message, ToastDuration.Short).Show();
-                // await DialogService.ShowAlertAsync("API Error", ex.Message, "OK");
             }
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private async Task OnSearchTextChanged()
+        {
+            _debounceCts?.Cancel();
+            _debounceCts = new CancellationTokenSource();
+            var token = _debounceCts.Token;
+
+            await Task.Delay(700, token);
+
+            if (!token.IsCancellationRequested)
+            {
+                ClearDataWithoutSearch();
+                await GetDatasAsync();
             }
         }
 
@@ -148,10 +180,18 @@ namespace inovasyposmobile.ViewModels
             if (HasNextPage == true)
             {
                 CurrentPage += 1;
-                await GetDatasAsync(selectMultipleFor);
+                await GetDatasAsync();
             }
 
             _isHandlingScroll = false;
+        }
+
+        private void ClearDataWithoutSearch()
+        {
+            Datas.Clear();
+            CurrentPage = 0;
+            ItemNumber = 0;
+            TotalItem = 0;
         }
 
         public void ClearData()

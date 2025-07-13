@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels"
+             xmlns:model="clr-namespace:inovasyposmobile.Models.Filters"
+             x:Class="inovasyposmobile.Views.Controls.SelectListOption"
+             Color="Transparent">
+    <Border
+        x:Name="Container"
+        x:DataType="viewModel:ValueDisplayViewModel"
+        StrokeThickness="0"
+        StrokeShape="RoundRectangle 10">
+        <Grid
+            RowDefinitions="Auto,Auto,*,Auto"
+            BackgroundColor="White">
+            <VerticalStackLayout
+                Grid.Row="0">
+                <Grid
+                    ColumnDefinitions="*,Auto"
+                    Padding="10">
+                    <Label
+                        x:Name="Title"
+                        Grid.Column="0"
+                        FontSize="17"
+                        FontAttributes="Bold" />
+                    <ActivityIndicator 
+                        Grid.Row="1"
+                        IsVisible="{Binding IsLoading}"
+                        IsRunning="True"
+                        HorizontalOptions="End"
+                        WidthRequest="20" 
+                        HeightRequest="20"
+                        Color="{StaticResource Primary}" />
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout
+                Grid.Row="1">
+                <Grid
+                    ColumnDefinitions="Auto,*,Auto"
+                    Padding="10,0">
+                    <Label
+                        Grid.Column="0"
+                        VerticalOptions="Center"
+                        FontFamily="MaterialSymbols"
+                        FontSize="16"
+                        TextColor="{StaticResource Primary}"
+                        Text="&#xE8b6;" />
+                    <Entry
+                        x:Name="SearchComponent"
+                        Grid.Column="1"
+                        Text="{Binding SearchText}" />
+                    <Label
+                        IsVisible="{Binding SearchTextNotEmpty}"
+                        Grid.Column="2"
+                        VerticalOptions="Center"
+                        FontFamily="MaterialSymbols"
+                        FontSize="16"
+                        TextColor="{StaticResource Danger}"
+                        Text="&#xE14c;">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ClearSearchTextCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </Grid>
+                <BoxView
+                    HeightRequest="1" />
+            </VerticalStackLayout>
+            <CollectionView 
+                x:Name="MyCollectionView"
+                Grid.Row="2"
+                IsVisible="{Binding HasData}"
+                RemainingItemsThreshold="0"
+                RemainingItemsThresholdReachedCommand="{Binding ScrollDataCommand}"
+                ItemsSource="{Binding Datas}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:ValueDisplayFilterModel">
+                        <Border
+                            Stroke="Transparent">
+                            <VerticalStackLayout>
+                                <StackLayout
+                                    Padding="10">
+                                    <Label 
+                                        Text="{Binding Display}" />
+                                </StackLayout>
+                                <!-- <BoxView 
+                                    HeightRequest="1"
+                                    BackgroundColor="Black"
+                                    HorizontalOptions="Fill" /> -->
+                            </VerticalStackLayout>
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnItemTapped"/>
+                            </Border.GestureRecognizers>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <Label
+                Grid.Row="2"
+                IsVisible="{Binding HasNoData}"
+                VerticalOptions="Center"
+                HorizontalTextAlignment="Center"
+                Text="Tidak ada data untuk ditampilkan" />
+            <VerticalStackLayout
+                Grid.Row="3">
+                <BoxView
+                    HeightRequest="1" />
+                <VerticalStackLayout
+                    Padding="10">
+                    <Label>
+                        <Label.Style>
+                            <Style TargetType="Label">
+                                <Setter Property="Text" Value="Semua data sudah ditampilkan" />
+                                <Setter Property="FontAttributes" Value="Bold" />
+                                <Style.Triggers>
+                                    <DataTrigger
+                                        TargetType="Label"
+                                        Binding="{Binding HasNextPage}"
+                                        Value="True">
+                                        <Setter Property="Text" Value="Scroll untuk melihat yang lainnya" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Label.Style>
+                    </Label>
+                    <HorizontalStackLayout
+                        Spacing="5">
+                        <Label
+                            Text="Ditampilkan" />
+                        <Label 
+                            Text="{Binding ItemNumber}" />
+                        <Label
+                            Text="dari" />
+                        <Label
+                            Text="{Binding TotalItem}" />
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </Grid>
+    </Border>
+</toolkit:Popup>
