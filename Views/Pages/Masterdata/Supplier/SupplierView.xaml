@@ -71,6 +71,10 @@
                                         FontSize="15"
                                         FontAttributes="Bold"
                                         Text="{Binding Nama}" />
+                                    <Label
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation"
+                                        Text="{Binding AlamatLengkap}" />
                                 </VerticalStackLayout>
                                 <BoxView
                                     Grid.Row="1"

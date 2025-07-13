@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Supplier"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
+             x:Class="inovasyposmobile.Views.Pages.Masterdata.Supplier.Components.SupplierCreateView"
+             Title="Tambah Supplier">
+    <Grid
+        x:DataType="viewModel:SupplierCreateViewModel"
+        RowDefinitions="*,Auto">
+        <ScrollView
+            Grid.Row="0">
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Padding="10,20"
+                Spacing="20">
+                <control:EntryColumnControl
+                    Placeholder="Nama supplier"
+                    IsRequired="True"
+                    Text="{Binding Nama,Mode=TwoWay}" />  
+                <control:EditorColumnControl
+                    Placeholder="Alamat"
+                    Text="{Binding Alamat,Mode=TwoWay}" />
+                <control:SelectListOptionControl
+                    Item="Wilayah"
+                    Title="{Binding Wilayah.Display}"
+                    Command="{Binding OnSelectWilayahCommand}" />
+                <control:EditorColumnControl
+                    Placeholder="Deskripsi"
+                    Text="{Binding Deskripsi,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Keyboard="Telephone"
+                    Placeholder="Kontak person"
+                    IsRequired="True"
+                    Text="{Binding KontakPerson,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Keyboard="Telephone"
+                    Placeholder="Telepon"
+                    IsRequired="True"
+                    Text="{Binding Telepon,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Keyboard="Telephone"
+                    Placeholder="No HP"
+                    Text="{Binding NoHP,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Keyboard="Email"
+                    Placeholder="Email"
+                    Text="{Binding Email,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Placeholder="Nama bank"
+                    Text="{Binding NamaBank,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Keyboard="Numeric"
+                    Placeholder="No. rekening"
+                    Text="{Binding NoRekening,Mode=TwoWay}" />
+                <control:EntryColumnControl
+                    Placeholder="Nama pemilik"
+                    Text="{Binding NamaPemilik,Mode=TwoWay}" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="10">
+            <Border
+                Padding="13"
+                BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 5">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddDataCommand}" />
+                </Border.GestureRecognizers>
+                <Label
+                    FontSize="16"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Text="Simpan" />
+            </Border>
+        </VerticalStackLayout>
+        <ActivityIndicator
+            IsVisible="{Binding IsLoading}"
+            Grid.Row="0"
+            IsRunning="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="50" HeightRequest="50"
+            Color="{StaticResource Primary}" />
+    </Grid>
+</ContentPage>
