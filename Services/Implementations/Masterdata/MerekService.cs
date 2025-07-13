@@ -122,7 +122,10 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            var response = await _httpClient.GetAsync($"{apiUrl}initjenis");
+            var token = await _authService.GetTokenAsync();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            var response = await _httpClient.GetAsync($"{apiUrl}initmerek");
 
             if (!response.IsSuccessStatusCode)
             {
