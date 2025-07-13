@@ -42,10 +42,4 @@ public partial class DetailComponentControl : ContentView
 			control.TextComponent.Text = (string)newValue;
 		}
 	}
-
-	private void TapGestureRecognizer_Tapped(object sender, TappedEventArgs e)
-	{
-		Console.WriteLine(Title);
-		Console.WriteLine(Text);
-	}
 }

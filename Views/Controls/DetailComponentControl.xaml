@@ -3,9 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="inovasyposmobile.Views.Controls.DetailComponentControl">
     <VerticalStackLayout>
-        <VerticalStackLayout.GestureRecognizers>
-            <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-        </VerticalStackLayout.GestureRecognizers>
         <Label
             x:Name="TitleComponent"
             FontSize="16"
