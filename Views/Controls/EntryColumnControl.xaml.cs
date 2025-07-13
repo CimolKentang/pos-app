@@ -35,4 +35,12 @@ public partial class EntryColumnControl : ContentView
         get => (string)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
+
+	public static readonly BindableProperty KeyboardProperty =
+			BindableProperty.Create(nameof(Keyboard), typeof(Keyboard), typeof(EntryColumnControl), Keyboard.Text);
+	public Keyboard Keyboard
+    {
+        get => (Keyboard)GetValue(KeyboardProperty);
+        set => SetValue(KeyboardProperty, value);
+    }
 }
