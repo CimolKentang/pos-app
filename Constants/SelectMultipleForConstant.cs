@@ -11,5 +11,6 @@ namespace inovasyposmobile.Constants
         public const string Gudang = "Gudang";
         public const string AkunPenjualan = "AkunPenjualan";
         public const string MetodePembayaran = "MetodePembayaran";
+        public const string Wilayah = "Wilayah"; 
     }
 }
