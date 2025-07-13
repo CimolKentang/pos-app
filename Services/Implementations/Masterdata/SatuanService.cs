@@ -122,7 +122,7 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
                 throw new InternetException("No Internet Connection");
             }
 
-            var response = await _httpClient.GetAsync($"{apiUrl}initjenis");
+            var response = await _httpClient.GetAsync($"{apiUrl}initsatuan");
 
             if (!response.IsSuccessStatusCode)
             {

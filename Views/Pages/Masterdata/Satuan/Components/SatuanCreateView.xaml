@@ -1,12 +1,54 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Satuan"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
              x:Class="inovasyposmobile.Views.Pages.Masterdata.Satuan.Components.SatuanCreateView"
-             Title="SatuanCreateView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             Title="Tambah Satuan">
+    <Grid
+        x:DataType="viewModel:SatuanCreateViewModel"
+        RowDefinitions="*,Auto">
+        <ScrollView
+            Grid.Row="0">
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Padding="10,20"
+                Spacing="20">
+                <control:EntryColumnControl
+                    Placeholder="Nama satuan"
+                    IsRequired="True"
+                    Text="{Binding Nama,Mode=TwoWay}" />  
+                <control:EditorColumnControl
+                    Placeholder="Deskripsi"
+                    Text="{Binding Deskripsi,Mode=TwoWay}" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="10">
+            <Border
+                Padding="13"
+                BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 5">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddDataCommand}" />
+                </Border.GestureRecognizers>
+                <Label
+                    FontSize="16"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Text="Simpan" />
+            </Border>
+        </VerticalStackLayout>
+        <ActivityIndicator
+            IsVisible="{Binding IsLoading}"
+            Grid.Row="0"
+            IsRunning="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="50" HeightRequest="50"
+            Color="{StaticResource Primary}" />
+    </Grid>
 </ContentPage>
