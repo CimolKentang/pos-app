@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Android.Service.Autofill;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using inovasyposmobile.Constants;

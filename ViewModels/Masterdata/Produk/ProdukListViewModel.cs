@@ -1,21 +1,17 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using inovasyposmobile.Constants;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Produk
 {
     public class ProdukListViewModel : BaseViewModel
     {
-        private readonly IProdukService _produkService;
+        private readonly ProdukService _produkService;
         private ObservableCollection<ProdukItemViewModel> _produks = new ObservableCollection<ProdukItemViewModel>();
         private ProdukSearchParams SearchParams = new ProdukSearchParams();
 
@@ -108,7 +104,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Produk
         public ICommand HandleScrollCommand { get; }
         public ICommand RefreshDataCommand { get; }
 
-        public ProdukListViewModel(IProdukService produkService)
+        public ProdukListViewModel(ProdukService produkService)
         {
             _produkService = produkService;
 

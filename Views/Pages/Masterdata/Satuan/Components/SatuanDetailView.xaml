@@ -1,12 +1,49 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Satuan"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
              x:Class="inovasyposmobile.Views.Pages.Masterdata.Satuan.Components.SatuanDetailView"
-             Title="SatuanDetailView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:DataType="viewModel:SatuanDetailViewModel"
+             Title="Detail Satuan">
+    <ContentPage.ToolbarItems>
+        <!-- <ToolbarItem 
+            Order="Primary" 
+            IconImageSource="{FontImageSource FontFamily='MaterialSymbols',Glyph='&#xE150;',Color={StaticResource Primary}}" 
+            Clicked="DeleteItem" /> -->
+        <ToolbarItem 
+            Order="Primary" 
+            IconImageSource="{FontImageSource FontFamily='MaterialSymbols',Glyph='&#xE872;',Color={StaticResource Primary}}"
+            Clicked="DeleteItem" />
+    </ContentPage.ToolbarItems>
+    <ScrollView>
+        <Grid
+            RowDefinitions="*"
+            VerticalOptions="Fill">
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Grid.Row="0"
+                Padding="20,10"
+                Spacing="20">
+                <Label
+                    FontSize="18"
+                    FontAttributes="Bold"
+                    Text="{Binding Satuan.Nama}" />
+                <control:DetailComponentControl
+                    Title="Kode"
+                    Text="{Binding Satuan.Kode}" />
+                <control:DetailComponentControl
+                    Title="Deskripsi"
+                    Text="{Binding Satuan.Deskripsi}" />
+            </VerticalStackLayout>
+            <ActivityIndicator
+                IsVisible="{Binding IsLoading}"
+                Grid.Row="0"
+                IsRunning="True"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                WidthRequest="50" HeightRequest="50"
+                Color="{StaticResource Primary}" />
+        </Grid>
+    </ScrollView>
 </ContentPage>

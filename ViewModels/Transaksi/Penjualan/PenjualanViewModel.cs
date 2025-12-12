@@ -19,7 +19,7 @@ using inovasyposmobile.Views.Controls;
 
 namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 {
-    public class PenjualanViewModel : BaseViewModel
+    public class PenjualanListViewModel : BaseViewModel
     {
         private readonly IPenjualanService _penjualanService;
         private readonly ValueDisplayViewModel _valueDisplayViewModel;
@@ -105,7 +105,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
         public ICommand HandleScrollCommand { get; }
         public ICommand ToggleFilterCommand { get; }
 
-        public PenjualanViewModel(IPenjualanService penjualanService, ValueDisplayViewModel valueDisplayViewModel)
+        public PenjualanListViewModel(IPenjualanService penjualanService, ValueDisplayViewModel valueDisplayViewModel)
         {
             _penjualanService = penjualanService;
             _valueDisplayViewModel = valueDisplayViewModel;
@@ -119,27 +119,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             });
         }
 
-        public ICommand ShowPelangganDialogCommand => new Command(async () =>
-        {
-            var answer = await Shell.Current.ShowPopupAsync(new SelectMultipleOneDialog(_valueDisplayViewModel, SelectMultipleForConstant.Pelanggan));
-            _valueDisplayViewModel.ClearData();
-
-            if (answer != null)
-            {
-                var result = (ValueDisplayFilterModel)answer;
-
-                var filter = new ValueDisplayRequestModel
-                {
-                    FilterDisplay = result.Display,
-                    FilterId = result.Value
-                };
-
-                SearchParams.FilterPelanggan.Add(filter);
-                ClearData();
-                
-                await GetPenjualans();
-            }
-        });
+        public ICommand ShowPelangganDialogCommand => new Command(() => {});
 
         private async Task OnSearchTextChanged()
         {

@@ -16,7 +16,7 @@
         <ToolbarItem Order="Secondary" Text="Logout" Clicked="Logout" />
     </ContentPage.ToolbarItems>
     <Grid
-        x:DataType="viewModel:PenjualanViewModel"
+        x:DataType="viewModel:PenjualanListViewModel"
         RowDefinitions="Auto,*,Auto">
         <VerticalStackLayout
             Grid.Row="0">

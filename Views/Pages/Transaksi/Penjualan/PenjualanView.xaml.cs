@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using CommunityToolkit.Maui.Views;
 using inovasyposmobile.Models.Transaksi.Penjualan;
-using inovasyposmobile.Services.Interfaces.Auth;
+using inovasyposmobile.Services.Implementations.Auth;
 using inovasyposmobile.ViewModels.Transaksi.Penjualan;
 using inovasyposmobile.Views.Controls;
 
@@ -9,12 +9,12 @@ namespace inovasyposmobile.Views.Pages.Transaksi.Penjualan;
 
 public partial class PenjualanView : ContentPage
 {
-	private readonly IAuthService _authService;
-	private readonly PenjualanViewModel _penjualanViewModel;
-	public PenjualanView(PenjualanViewModel penjualanViewModel, IAuthService authService)
+	private readonly AuthService _authService;
+	private readonly PenjualanListViewModel _penjualanViewModel;
+	public PenjualanView(PenjualanListViewModel penjualanListViewModel, AuthService authService)
 	{
 		InitializeComponent();
-		BindingContext = _penjualanViewModel = penjualanViewModel;
+		BindingContext = _penjualanViewModel = penjualanListViewModel;
 		_authService = authService;
 	}
 

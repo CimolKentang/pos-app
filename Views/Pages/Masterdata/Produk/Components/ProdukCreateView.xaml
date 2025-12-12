@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModel="clr-namespace:inovasyposmobile.ViewModels.Masterdata.Produk"
+             xmlns:control="clr-namespace:inovasyposmobile.Views.Controls"
+             x:Class="inovasyposmobile.Views.Pages.Masterdata.Produk.Components.ProdukCreateView"
+             Title="Tambah Produk">
+    <Grid
+        x:DataType="viewModel:ProdukCreateViewModel"
+        RowDefinitions="*,Auto">
+        <ScrollView
+            Grid.Row="0">
+            <VerticalStackLayout
+                IsVisible="{Binding IsNotLoading}"
+                Padding="10,20"
+                Spacing="20">
+                <VerticalStackLayout
+                    Spacing="10">
+                    <Border
+                        IsVisible="{Binding HasNoImage}"
+                        HeightRequest="95"
+                        WidthRequest="95"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0"
+                        BackgroundColor="{StaticResource Gray100}">
+                        <Label
+                            VerticalOptions="Center"
+                            HorizontalOptions="Center"
+                            FontFamily="MaterialSymbols"
+                            FontSize="45"
+                            TextColor="White"
+                            Text="&#xE410;" />
+                    </Border>
+                    <Border
+                        IsVisible="{Binding HasImage}"
+                        HeightRequest="95"
+                        WidthRequest="95"
+                        StrokeShape="RoundRectangle 10"
+                        StrokeThickness="0">
+                        <Image
+                            HeightRequest="95"
+                            WidthRequest="95"
+                            Source="{Binding Image}" />
+                    </Border>
+                    <HorizontalStackLayout
+                        HorizontalOptions="Center"
+                        Spacing="20">
+                        <Label
+                            FontFamily="MaterialSymbols"
+                            FontSize="25"
+                            Text="&#xE3ad;">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding PickPhotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                        <Label
+                            FontFamily="MaterialSymbols"
+                            FontSize="25"
+                            Text="&#xE3b0;">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding CapturePhotoCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>    
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+                <control:EntryColumnControl
+                    Placeholder="Nama produk"
+                    IsRequired="True"
+                    Text="{Binding Nama,Mode=TwoWay}" />  
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <control:SelectListOptionControl
+                        Grid.Column="0"
+                        Item="Satuan"
+                        Title="{Binding Satuan.Display}"
+                        Command="{Binding OnSelectSatuanCommand}" />
+                    <control:SelectListOptionControl
+                        Grid.Column="1"
+                        Item="Jenis"
+                        Title="{Binding Jenis.Display}"
+                        Command="{Binding OnSelectJenisCommand}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <control:SelectListOptionControl
+                        Grid.Column="0"
+                        Item="Merek"
+                        Title="{Binding Merek.Display}"
+                        Command="{Binding OnSelectMerekCommand}" />
+                    <control:SelectListOptionControl
+                        Grid.Column="1"
+                        Item="Supplier"
+                        Title="{Binding Supplier.Display}"
+                        Command="{Binding OnSelectSupplierCommand}" />
+                </Grid>
+                <control:EditorColumnControl
+                    Placeholder="Deskripsi"
+                    Text="{Binding Deskripsi,Mode=TwoWay}" />
+                <Border
+                    Stroke="{StaticResource Primary}"
+                    StrokeShape="RoundRectangle 5"
+                    Padding="10,15">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="GoToCreateStok" />
+                    </Border.GestureRecognizers>
+                    <FlexLayout
+                        AlignItems="Center"
+                        JustifyContent="SpaceBetween">
+                        <HorizontalStackLayout
+                            Spacing="5">
+                            <Label
+                                Text="Atur Stok Produk" />
+                            <Label
+                                Text="{Binding Stoks.Count,StringFormat='({0})'}" />
+                        </HorizontalStackLayout>
+                        <Label
+                            FontFamily="MaterialSymbols"
+                            FontSize="20"
+                            TextColor="{StaticResource Primary}"
+                            Text="&#xE409;" />
+                    </FlexLayout>
+                </Border>
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <control:EntryColumnControl
+                        Grid.Column="0"
+                        Placeholder="Berat (gram)"
+                        Keyboard="Numeric"
+                        Text="{Binding Berat,Mode=TwoWay}" />
+                    <control:EntryColumnControl
+                        Grid.Column="1"
+                        Placeholder="Barcode"
+                        Keyboard="Numeric"
+                        Text="{Binding Barcode,Mode=TwoWay}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <control:EntryColumnControl
+                        Grid.Column="0"
+                        Placeholder="Lokasi"
+                        Text="{Binding Lokasi,Mode=TwoWay}" />
+                    <control:EntryColumnControl
+                        Grid.Column="1"
+                        Placeholder="SKU"
+                        Text="{Binding Sku,Mode=TwoWay}" />
+                </Grid>
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="10">
+                    <control:EntryColumnControl
+                        Grid.Column="0"
+                        Placeholder="Lama Penggunaan (hari)"
+                        Keyboard="Numeric"
+                        Text="{Binding LamaPenggunaan,Mode=TwoWay}" />
+                    <control:EntryColumnControl
+                        Grid.Column="1"
+                        Placeholder="Minimum Stok"
+                        Keyboard="Numeric"
+                        Text="{Binding MinStok,Mode=TwoWay}" />
+                </Grid>
+                <control:SwitchColumnControl
+                    Title="Stok Minimum Alert"
+                    IsToggled="{Binding UseMinStokAlert}" />
+            </VerticalStackLayout>
+        </ScrollView>
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="10">
+            <Border
+                Padding="13"
+                BackgroundColor="{StaticResource Primary}"
+                StrokeThickness="0"
+                StrokeShape="RoundRectangle 5">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding AddDataCommand}" />
+                </Border.GestureRecognizers>
+                <Label
+                    FontSize="16"
+                    TextColor="White"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    Text="Simpan" />
+            </Border>
+        </VerticalStackLayout>
+        <ActivityIndicator
+            IsVisible="{Binding IsLoading}"
+            Grid.Row="0"
+            IsRunning="True"
+            HorizontalOptions="Center"
+            VerticalOptions="Center"
+            WidthRequest="50" HeightRequest="50"
+            Color="{StaticResource Primary}" />
+    </Grid>
+</ContentPage>

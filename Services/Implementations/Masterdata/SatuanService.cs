@@ -9,8 +9,8 @@ using inovasyposmobile.Helpers;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Requests;
 using inovasyposmobile.Models.Responses;
+using inovasyposmobile.Services.Implementations.Auth;
 using inovasyposmobile.Services.Interfaces;
-using inovasyposmobile.Services.Interfaces.Auth;
 
 namespace inovasyposmobile.Services.Implementations.Masterdata
 {
@@ -18,10 +18,10 @@ namespace inovasyposmobile.Services.Implementations.Masterdata
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;
-        private readonly IAuthService _authService;
+        private readonly AuthService _authService;
         private readonly string apiUrl = "masterdata/satuan/";
 
-        public SatuanService(IHttpClientFactory httpClientFactory, IConnectivity connectivity, IAuthService authService)
+        public SatuanService(IHttpClientFactory httpClientFactory, IConnectivity connectivity, AuthService authService)
         {
             _authService = authService;
             _httpClient = httpClientFactory.CreateClient("InovasyAPI");

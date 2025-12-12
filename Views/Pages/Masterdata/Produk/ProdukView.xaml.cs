@@ -39,6 +39,6 @@ public partial class ProdukView : ContentPage
 
 	private async void GoToCreate(object sender, TappedEventArgs e)
 	{
-		await Shell.Current.GoToAsync("JenisCreate");
+		await Shell.Current.GoToAsync("ProdukCreate");
 	}
 }

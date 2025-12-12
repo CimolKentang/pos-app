@@ -21,7 +21,7 @@
                     ItemsSource="{Binding SelectedProduks}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate
-                            x:DataType="produkVM:ProdukWithStokViewModel">
+                            x:DataType="produkVM:PenjualanCreateProdukViewModel">
                             <Grid
                                 ColumnDefinitions="*,Auto,80"
                                 Padding="0,10,0,10">
@@ -72,7 +72,7 @@
 
                 <BoxView
                     HeightRequest="1"
-                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                    BackgroundColor="Black"
                     Margin="0,0,0,10" />
 
                 <VerticalStackLayout
@@ -129,7 +129,7 @@
 
                 <BoxView 
                     HeightRequest="1"
-                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                    BackgroundColor="Black"
                     Margin="0,10,0,10" />
 
                 <VerticalStackLayout
@@ -156,7 +156,7 @@
                                         Text="{Binding Jurnal.NamaAkun}" />
                                     <Border
                                         Grid.Column="2"
-                                        Stroke="{AppThemeBinding Dark=White,Light=Black}"
+                                        Stroke="Black"
                                         StrokeShape="RoundRectangle 5">
                                         <Entry
                                             Keyboard="Numeric"
@@ -177,14 +177,14 @@
 
                     <Button
                         Text="Tambah Akun"
-                        TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                        TextColor="White"
                         BackgroundColor="{StaticResource Primary}"
                         Command="{Binding SelectAkunDialogCommand}" />
                 </VerticalStackLayout>
 
                 <BoxView 
                     HeightRequest="1"
-                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                    BackgroundColor="Black"
                     Margin="0,10,0,0" />
 
                 <Editor
@@ -194,7 +194,7 @@
 
                 <BoxView 
                     HeightRequest="1"
-                    BackgroundColor="{AppThemeBinding Dark=White,Light=Black}"
+                    BackgroundColor="Black"
                     Margin="0,10,0,10" />
 
                 <VerticalStackLayout
@@ -208,7 +208,7 @@
                             Text="Jumlah Bayar" />
                         <Border
                             Grid.Column="2"
-                            Stroke="{AppThemeBinding Dark=White,Light=Black}"
+                            Stroke="Black"
                             StrokeShape="RoundRectangle 5">
                             <Entry
                                 Keyboard="Numeric"
@@ -243,13 +243,13 @@
                     ColumnSpacing="10">
                     <Button 
                         Grid.Column="0"
-                        TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                        TextColor="White"
                         BackgroundColor="{StaticResource Danger}"
                         Command="{Binding CancelPenjualanCommand}"
                         Text="Batalkan" />
                     <Button
                         Grid.Column="1"
-                        TextColor="{AppThemeBinding Dark=White,Light=Black}"
+                        TextColor="White"
                         BackgroundColor="{StaticResource Primary}"
                         Command="{Binding SubmitPenjualanCommand}"
                         Text="Buat Penjualan" />

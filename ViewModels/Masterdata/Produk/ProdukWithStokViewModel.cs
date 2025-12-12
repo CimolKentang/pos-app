@@ -7,7 +7,7 @@ using inovasyposmobile.Models.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Produk
 {
-    public class ProdukWithStokViewModel : BaseViewModel
+    public class PenjualanCreateProdukViewModel : BaseViewModel
     {
         private ProdukWithStokModel _produkWithStok = new ProdukWithStokModel();
         public ProdukWithStokModel ProdukWithStok
@@ -53,7 +53,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Produk
         public ICommand IncreaseCountCommand { get; }
         public ICommand DecreaseCountCommand { get; }
 
-        public ProdukWithStokViewModel()
+        public PenjualanCreateProdukViewModel()
         {
             SelectToggleCommand = new Command(SelectToggle);
             IncreaseCountCommand = new Command(IncreaseCount);

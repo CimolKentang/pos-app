@@ -1,11 +1,11 @@
-﻿using inovasyposmobile.Services.Interfaces.Auth;
+﻿using inovasyposmobile.Services.Implementations.Auth;
 
 namespace inovasyposmobile;
 
 public partial class App : Application
 {
-	private readonly IAuthService _authService;
-	public App(IAuthService authService)
+	private readonly AuthService _authService;
+	public App(AuthService authService)
 	{
 		InitializeComponent();
 		_authService = authService;

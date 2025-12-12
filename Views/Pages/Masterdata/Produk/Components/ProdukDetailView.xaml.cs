@@ -43,4 +43,9 @@ public partial class ProdukDetailView : ContentPage
 			_produkDetailViewModel.DeleteDataCommand.Execute(null);
 		}
     }
+
+	private async void GoToStokDetail(object sender, TappedEventArgs e)
+	{
+		await Shell.Current.GoToAsync("ProdukStokDetail");
+    }
 }

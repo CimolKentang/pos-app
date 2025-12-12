@@ -10,7 +10,7 @@ using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Responses;
 using inovasyposmobile.Models.Transaksi;
 using inovasyposmobile.Models.Transaksi.Penjualan;
-using inovasyposmobile.Services.Interfaces.Auth;
+using inovasyposmobile.Services.Implementations.Auth;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 
 namespace inovasyposmobile.Services.Implementations.Transaksi
@@ -19,12 +19,12 @@ namespace inovasyposmobile.Services.Implementations.Transaksi
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;
-        private readonly IAuthService _authService;
+        private readonly AuthService _authService;
         private readonly string apiUrl = "penjualan/penjualan/";
         public PenjualanService(
             IHttpClientFactory httpClientFactory,
             IConnectivity connectivity,
-            IAuthService authService
+            AuthService authService
         ) {
             _authService = authService;
             _httpClient = httpClientFactory.CreateClient("InovasyAPI");
@@ -141,9 +141,12 @@ namespace inovasyposmobile.Services.Implementations.Transaksi
 
             try
             {
-                var response = await _httpClient.GetAsync($"{apiUrl}initpenjualankasir");
-                response.EnsureSuccessStatusCode();
+                var token = await _authService.GetTokenAsync();
+                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
+                var response = await _httpClient.GetAsync($"{apiUrl}initpenjualankasir");
+                
+                response.EnsureSuccessStatusCode();
                 return await response.Content.ReadFromJsonAsync<BaseResponse<PenjualanModel>>();
             }
             catch (HttpRequestException ex)

@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Auth;
 using inovasyposmobile.Models.Responses;
-using inovasyposmobile.Services.Interfaces.Auth;
 using Microsoft.IdentityModel.Tokens;
 
 namespace inovasyposmobile.Services.Implementations.Auth
 {
-    public class AuthService : IAuthService
+    public class AuthService
     {
         private readonly HttpClient _httpClient;
         private readonly IConnectivity _connectivity;

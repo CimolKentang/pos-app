@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
@@ -14,7 +10,7 @@ using inovasyposmobile.Models.Akuntansi;
 using inovasyposmobile.Models.Filters;
 using inovasyposmobile.Models.Masterdata;
 using inovasyposmobile.Models.Transaksi.Penjualan;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 using inovasyposmobile.ViewModels.Akuntansi;
 using inovasyposmobile.ViewModels.Masterdata.Produk;
@@ -25,7 +21,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
     public class PenjualanCreateViewModel : BaseViewModel
     {
         private readonly IPenjualanService _penjualanService;
-        private readonly IProdukService _produkService;
+        private readonly ProdukService _produkService;
         private readonly ValueDisplayViewModel _valueDisplayViewModel;
 
         private PenjualanModel? _penjualan;
@@ -35,8 +31,8 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             set => SetProperty(ref _penjualan, value);
         }
 
-        private ObservableCollection<ProdukWithStokViewModel> _produks = new();
-        public ObservableCollection<ProdukWithStokViewModel> Produks
+        private ObservableCollection<PenjualanCreateProdukViewModel> _produks = new();
+        public ObservableCollection<PenjualanCreateProdukViewModel> Produks
         {
             get => _produks;
             set
@@ -47,8 +43,8 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
         // selected produks for display
         // penjualan details for sending the data to API
-        private ObservableCollection<ProdukWithStokViewModel> _selectedProduks = new();
-        public ObservableCollection<ProdukWithStokViewModel> SelectedProduks
+        private ObservableCollection<PenjualanCreateProdukViewModel> _selectedProduks = new();
+        public ObservableCollection<PenjualanCreateProdukViewModel> SelectedProduks
         {
             get => _selectedProduks;
             set
@@ -232,7 +228,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
         public PenjualanCreateViewModel(
             IPenjualanService penjualanService,
-            IProdukService produkService,
+            ProdukService produkService,
             ValueDisplayViewModel valueDisplayViewModel
         )
         {
@@ -293,17 +289,21 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             ProdukSearchParams.PageIndex = CurrentPage;
             var produks = await _produkService.GetProdukWithStoks(ProdukSearchParams);
 
+            Console.WriteLine(produks);
+
             if (produks?.Data?.Items != null)
             {
                 foreach (var item in produks.Data.Items)
                 {
-                    var produkViewModel = new ProdukWithStokViewModel();
+                    var produkViewModel = new PenjualanCreateProdukViewModel();
                     produkViewModel.ProdukWithStok = item;
 
                     if (!string.IsNullOrEmpty(item.Gambar))
                     {
                         produkViewModel.HasImage = true;
                     }
+
+                    Console.WriteLine(produkViewModel.ProdukWithStok.NamaProduk);
 
                     Produks.Add(produkViewModel);
                 }
@@ -385,7 +385,7 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
 
         private async Task SelectAkunDialog()
         {
-            var answer = await Shell.Current.ShowPopupAsync(new SelectMultipleOneDialog(_valueDisplayViewModel, SelectMultipleForConstant.AkunPenjualan));
+            var answer = await Shell.Current.ShowPopupAsync(new SelectListOption(_valueDisplayViewModel, SelectMultipleForConstant.AkunPenjualan, "Akun"));
             _valueDisplayViewModel.ClearData();
 
             if (answer != null)
@@ -590,17 +590,17 @@ namespace inovasyposmobile.ViewModels.Transaksi.Penjualan
             if (Produks == null) return;
             foreach (var produk in Produks)
             {
-                produk.PropertyChanged += OnChildPropertyChanged!;
+                produk.PropertyChanged += OnProdukPropertyChanged!;
             }
         }
 
-        private void OnChildPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnProdukPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            // var produk = (ProdukWithStokViewModel)sender;
+            // var produk = (PenjualanCreateProdukViewModel)sender;
 
             // Console.WriteLine($"Child '{produk.ProdukWithStok!.NamaProduk}' changed property '{e.PropertyName}'");
 
-            // if (e.PropertyName == nameof(ProdukWithStokViewModel.Count))
+            // if (e.PropertyName == nameof(PenjualanCreateProdukViewModel.Count))
             // {
             //     Console.WriteLine($"Count updated to {produk.Count}");
             // }

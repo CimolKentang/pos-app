@@ -1,19 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Maui.Core;
 using inovasyposmobile.Exceptions;
 using inovasyposmobile.Models.Masterdata;
-using inovasyposmobile.Services.Interfaces.Masterdata;
+using inovasyposmobile.Services.Implementations.Masterdata;
 
 namespace inovasyposmobile.ViewModels.Masterdata.Produk
 {
     public class ProdukDetailViewModel : BaseViewModel
     {
-        private readonly IProdukService _produkService;
+        private readonly ProdukService _produkService;
 
         private ProdukModel? _produk;
         public ProdukModel? Produk
@@ -75,7 +71,7 @@ namespace inovasyposmobile.ViewModels.Masterdata.Produk
         public ICommand ClearDataCommand { get; }
         public ICommand DeleteDataCommand { get; }
 
-        public ProdukDetailViewModel(IProdukService produkService)
+        public ProdukDetailViewModel(ProdukService produkService)
         {
             _produkService = produkService;
 

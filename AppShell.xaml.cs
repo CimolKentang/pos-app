@@ -1,5 +1,4 @@
-﻿using inovasyposmobile.Services.Interfaces.Auth;
-using inovasyposmobile.Views.Pages.Masterdata.Jenis;
+﻿using inovasyposmobile.Views.Pages.Masterdata.Jenis;
 using inovasyposmobile.Views.Pages.Masterdata.Jenis.Components;
 using inovasyposmobile.Views.Pages.Masterdata.Merek;
 using inovasyposmobile.Views.Pages.Masterdata.Merek.Components;
@@ -28,6 +27,9 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute("Produk", typeof(ProdukView));
 		Routing.RegisterRoute("ProdukDetail", typeof(ProdukDetailView));
+		Routing.RegisterRoute("ProdukCreate", typeof(ProdukCreateView));
+		Routing.RegisterRoute("ProdukStokCreate", typeof(ProdukStokCreateView));
+		Routing.RegisterRoute("ProdukStokDetail", typeof(ProdukStokDetailView));
 
 		Routing.RegisterRoute("Merek", typeof(MerekView));
 		Routing.RegisterRoute("MerekDetail", typeof(MerekDetailView));
@@ -43,6 +45,7 @@ public partial class AppShell : Shell
 
 		Routing.RegisterRoute("Supplier", typeof(SupplierView));
 		Routing.RegisterRoute("SupplierCreate", typeof(SupplierCreateView));
+		Routing.RegisterRoute("SupplierDetail", typeof(SupplierDetailView));
 
 		Routing.RegisterRoute("Pelanggan", typeof(PelangganView));
 	}

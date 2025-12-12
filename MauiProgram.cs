@@ -6,8 +6,6 @@ using inovasyposmobile.Services.Implementations.Auth;
 using inovasyposmobile.Services.Implementations.Masterdata;
 using inovasyposmobile.Services.Implementations.Transaksi;
 using inovasyposmobile.Services.Interfaces;
-using inovasyposmobile.Services.Interfaces.Auth;
-using inovasyposmobile.Services.Interfaces.Masterdata;
 using inovasyposmobile.Services.Interfaces.Transaksi;
 using inovasyposmobile.ViewModels;
 using inovasyposmobile.ViewModels.Auth;
@@ -16,11 +14,8 @@ using inovasyposmobile.ViewModels.Masterdata.Jenis;
 using inovasyposmobile.ViewModels.Masterdata.Merek;
 using inovasyposmobile.ViewModels.Masterdata.Produk;
 using inovasyposmobile.ViewModels.Masterdata.Supplier;
-using inovasyposmobile.ViewModels.Transaksi;
 using inovasyposmobile.ViewModels.Transaksi.Penjualan;
-using inovasyposmobile.Views.Pages.Transaksi.Penjualan;
 using Microsoft.Extensions.Logging;
-using Microsoft.Maui.Handlers;
 using Syncfusion.Maui.Core.Hosting;
 using Syncfusion.Maui.Toolkit.Hosting;
 using inovasyposmobile.ViewModels.Masterdata.Pelanggan;
@@ -58,6 +53,7 @@ public static class MauiProgram
 		builder.Services.AddHttpClient("InovasyAPI", client =>
 		{
 			client.BaseAddress = new Uri("https://api-pos.inovasy.com/api/v1/");
+			// client.BaseAddress = new Uri("https://10.247.58.115:7023/api/v1/");
 			client.DefaultRequestHeaders.Accept.Add(
 				new MediaTypeWithQualityHeaderValue("application/json")
 			);
@@ -72,7 +68,7 @@ public static class MauiProgram
 		});
 
 		// register services
-		builder.Services.AddSingleton<IAuthService, AuthService>();
+		builder.Services.AddSingleton<AuthService>();
 		builder.Services.AddSingleton<LoginViewModel>();
 		
 		builder.Services.AddSingleton<IPenjualanService, PenjualanService>();
@@ -80,9 +76,10 @@ public static class MauiProgram
 		builder.Services.AddSingleton<PenjualanDetailViewModel>();
 		builder.Services.AddSingleton<PenjualanCreateViewModel>();
 
-		builder.Services.AddSingleton<IProdukService, ProdukService>();
+		builder.Services.AddSingleton<ProdukService>();
 		builder.Services.AddSingleton<ProdukListViewModel>();
 		builder.Services.AddSingleton<ProdukDetailViewModel>();
+		builder.Services.AddSingleton<ProdukCreateViewModel>();
 
 		builder.Services.AddSingleton<JenisService>();
 		builder.Services.AddSingleton<JenisListViewModel>();
@@ -92,14 +89,17 @@ public static class MauiProgram
 		builder.Services.AddSingleton<MerekService>();
 		builder.Services.AddSingleton<MerekListViewModel>();
 		builder.Services.AddSingleton<MerekCreateViewModel>();
+		builder.Services.AddSingleton<MerekDetailViewModel>();
 
 		builder.Services.AddSingleton<SatuanService>();
 		builder.Services.AddSingleton<SatuanListViewModel>();
 		builder.Services.AddSingleton<SatuanCreateViewModel>();
+		builder.Services.AddSingleton<SatuanDetailViewModel>();
 
 		builder.Services.AddSingleton<SupplierService>();
 		builder.Services.AddSingleton<SupplierListViewModel>();
 		builder.Services.AddSingleton<SupplierCreateViewModel>();
+		builder.Services.AddSingleton<SupplierDetailViewModel>();
 
 		builder.Services.AddSingleton<PelangganService>();
 		builder.Services.AddSingleton<PelangganListViewModel>();

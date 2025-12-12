@@ -6,13 +6,13 @@ using System.Windows.Input;
 using Android.Content;
 using Android.Views.InputMethods;
 using inovasyposmobile.Models.Auth;
-using inovasyposmobile.Services.Interfaces.Auth;
+using inovasyposmobile.Services.Implementations.Auth;
 
 namespace inovasyposmobile.ViewModels.Auth
 {
     public class LoginViewModel : BaseViewModel
     {
-        private readonly IAuthService _authService;
+        private readonly AuthService _authService;
 
         private string _username = "";
         public string Username
@@ -44,7 +44,7 @@ namespace inovasyposmobile.ViewModels.Auth
         public ICommand ToggleHidePasswordCommand { get; }
         public ICommand LoginCommand { get; }
 
-        public LoginViewModel(IAuthService authService)
+        public LoginViewModel(AuthService authService)
         {
             _authService = authService;
             ToggleHidePasswordCommand = new Command(ToggleHidePassword);
